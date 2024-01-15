@@ -1,0 +1,66 @@
+<div class="grid grid-cols-4 gap-x-4 gap-y-10">
+
+    <% const articles = [
+    {
+      title: 'Introdução à Inteligência Artificial',
+      date: '10/11/2024',
+      theme: 'Inteligência Artificial',
+      views: 120,
+      img: 'https://www.ideianoar.com.br/wp-content/uploads/2021/05/inteligencia-artificial.png'
+    },
+    {
+      title: 'Desenvolvimento Web Moderno com React',
+      date: '12/15/2024',
+      theme: 'Desenvolvimento Web',
+      views: 87,
+      img: 'https://miro.medium.com/v2/resize:fit:1400/1*vHHBwcUFUaHWXntSnqKdCA.png'
+    },
+    {
+      title: 'A Revolução do 5G: O Futuro das Comunicações',
+      date: '01/05/2024',
+      theme: 'Redes e Comunicações',
+      views: 205,
+      img: 'https://digitalks.com.br/wp-content/uploads/2019/12/5g-scaled.jpg'
+    },
+    {
+      title: 'Explorando as Novidades do iOS 15',
+      date: '02/20/2024',
+      theme: 'Desenvolvimento Mobile',
+      views: 150,
+      img: 'https://t.ctcdn.com.br/6sC8f00iSbKKaQ3X7PN0Rmx9Vbc=/640x360/smart/i459600.png'
+    },
+    {
+      title: 'Segurança Cibernética: Desafios e Soluções',
+      date: '03/08/2024',
+      theme: 'Segurança da Informação',
+      views: 180,
+      img: 'https://rapaduratech.com.br/wp-content/uploads/2023/08/distintivo-de-seguranca-de-internet-3d-1-scaled.jpg'
+    },
+    {
+      title: 'A Ascensão da Realidade Virtual',
+      date: '04/12/2024',
+      theme: 'Tecnologias Emergentes',
+      views: 98,
+      img: 'https://quirius.com.br/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-15-at-16.12.02-1.jpeg'
+    },
+    {
+      title: 'Machine Learning na Medicina: Inovações e Desafios',
+      date: '05/22/2024',
+      theme: 'Saúde e Tecnologia',
+      views: 134,
+      img: 'https://futurodasaude.com.br/wp-content/uploads/2022/01/o-que-e-machine-learning-2-scaled.jpeg'
+    },
+    {
+      title: 'Blockchain: Além das Criptomoedas',
+      date: '06/30/2024',
+      theme: 'Tecnologias Emergentes',
+      views: 112,
+      img: 'https://telium.com.br//storage/resized/blog_posts/December2023-750x500/8QiU8tDdJKU785TPunWp.jpg'
+    }
+  ]; %>
+    
+    <% articles.forEach(element => { %>
+        <%- include('../../components/cards/card.ejs', {data: element}) %>
+    <% }) %>
+    
+</div>
