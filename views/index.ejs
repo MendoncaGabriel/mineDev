@@ -12,16 +12,17 @@
 <body class="bg-gray-200">
   <%- include('../components/navbar/navbar.ejs') %>
 
-  
   <main class="p-4 m-auto w-full max-w-screen-2xl block">
     <h1 class="text-6xl font-semibold mb-16">Principais Artigos</h1>
   
-
-    <%- include('../components/grid/grid.ejs') %>
+    <%- include('../components/grid/grid.ejs', {data: articles}) %>
 
   </main>
 
 </body>
 </html>
+
+
+
 
 
