@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const dateNow = require('../services/dateNow.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -61,7 +62,7 @@ router.get('/', function(req, res, next) {
       img: 'https://telium.com.br//storage/resized/blog_posts/December2023-750x500/8QiU8tDdJKU785TPunWp.jpg'
     }
   ]
-  res.render('index', { title: 'MineDev', articles: data});
+  res.render('index', {dateNow: dateNow(), title: 'MineDev', articles: data});
 });
 
 router.get('/:article', function(req, res, next) {
@@ -112,7 +113,7 @@ router.get('/:article', function(req, res, next) {
     ]
   };
 
-  res.render('article', { data });
+  res.render('article', { data: data, dateNow: dateNow() });
 });
 
 module.exports = router;

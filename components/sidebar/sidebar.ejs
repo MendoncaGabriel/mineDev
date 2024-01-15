@@ -1,0 +1,46 @@
+<aside id="lateralMenu" class="fixed top-0 right-[-384px] hidden bg-gray-800 shadow-lg w-96 h-screen z-50 duration-300 p-4">
+    
+    <button onclick="Close()" class="text-white hover:text-red-700 duration-300   text-3xl flex items-center space-x-4">
+        <i class="fa-solid fa-circle-right"></i> <p class="text-lg">Fechar</p>
+    </button>
+
+    <div class="flex flex-col text-white space-y-2 my-4">
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Início</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Artigos</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Tutoriais</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Recursos</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Sobre nós</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Contato</a>
+        <a class="px-4 py-2 hover:bg-gray-100 bg-gray-700 duration-100 ease-linear" href="#">Política de Privacidade</a>
+    </div>
+    
+
+    <div class="w-full relative">
+        <input type="text" class="border w-full px-4 py-2 focus:outline-none text-gray-600 pr-14" placeholder="Pesquisar">
+
+        <button class="absolute text-gray-800 right-4 text-2xl top-1/2 transform -translate-y-1/2">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+
+
+    <h2 class="text-white text-center py-2 absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full"><%= dateNow  %></h2>
+
+</aside>
+
+<script>
+
+
+    function Close(){
+       
+        let lateralMenu = document.getElementById('lateralMenu')
+        lateralMenu.style.right = '-384px'
+
+        setTimeout(() => {
+            lateralMenu.style.display = 'none'
+        }, 300);
+
+    }
+
+
+</script>

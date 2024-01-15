@@ -1,0 +1,76 @@
+
+<div class="p-6 bg-gray-700 mb-5 text-white relative overflow-hidden">
+    <span id="ticker" class="absolute -right-[100%] top-1/2 transform -translate-y-1/2 whitespace-nowrap flex space-x-16"></span>
+</div>
+<script>
+    let Ticker = document.getElementById('ticker')
+    let TickerX = -100
+    let TickerD = 1
+    function render(){
+        TickerX += TickerD
+        Ticker.style.right = TickerX + 'px'
+
+        if(TickerX >= window.innerWidth){
+            TickerX = -100 - Ticker.offsetWidth
+        }
+
+        requestAnimationFrame(render)
+    }
+    requestAnimationFrame(render)
+
+
+    // COTAÇÃO DO DOLAR
+    fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL')
+    .then(res => res.json())
+    .then((res)=>{
+        let val = Number(res.USDBRL.ask)
+        let div = `
+            <div class="flex space-x-2">
+                <div class="text-green-500">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <p>DOLAR: R$ ${val.toFixed(2)}</p>
+            </div>
+        `
+   
+   
+        Ticker.innerHTML += div
+    })
+    
+    // COTAÇÃO DO EURO
+    fetch('https://economia.awesomeapi.com.br/json/last/EUR-BRL')
+    .then(res => res.json())
+    .then((res)=>{
+
+        let val = Number(res.EURBRL.ask)
+        let div = `
+            <div class="flex space-x-2">
+                <div class="text-blue-500">
+                    <i class="fa-solid fa-euro-sign"></i>    
+                </div>
+                <p>EURO: R$ ${val.toFixed(2)}</p>
+            </div>
+        `
+    
+    
+        Ticker.innerHTML += div
+    })
+
+    // COTAÇÃO DO BITCOIN
+    fetch('https://economia.awesomeapi.com.br/json/last/BTC-BRL')
+    .then(res => res.json())
+    .then((res)=>{
+        let val = Number(res.BTCBRL.ask)
+        let div = `
+            <div class="flex space-x-2">
+                <div class="text-yellow-500">
+                    <i class="fa-brands fa-bitcoin" ></i> 
+                </div>
+                <p>BITCOIN: R$ ${val.toFixed(2)}</p>
+            </div>
+        `
+        Ticker.innerHTML += div
+    })
+
+
+</script>
