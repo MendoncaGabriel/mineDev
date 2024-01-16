@@ -1,35 +1,32 @@
-
-
-
-<div class="py-4 lg:px-16 px-8 bg-gray-800 text-gray-100 sm:flex  grid grid-cols-2 gap-4 items-center justify-between text-lg ">
-    <a href="/" class="row-start-1 flex-none" >
-        <img src="https://geekblog.com.br/wp-content/uploads/2020/07/logo-geekblog.png.webp" alt="logo" class="h-16 flex-none" >
+<div class="py-4 lg:px-16 px-8 bg-gray-800 text-gray-100 flex items-center sm:justify-between text-lg">
+    <a href="/" class="flex-none">
+        <img src="https://geekblog.com.br/wp-content/uploads/2020/07/logo-geekblog.png.webp" alt="logo" class="h-16 flex-none">
     </a>
 
-    <nav class="space-x-4 hidden xl:block ">
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Início</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Artigos</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Tutoriais</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Recursos</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Sobre nós</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Contato</a>
-        <a class="hover:border-b-4 border-red-500 pb-1 duration-100 ease-linear" href="#">Política de Privacidade</a>
+    <!-- Navegação principal -->
+    <nav class="hidden xl:flex space-x-4 xl:text-sm 2xl:text-lg h-full">
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Início</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Artigos</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Tutoriais</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Recursos</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Sobre nós</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Contato</a>
+        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Política de Privacidade</a>
     </nav>
 
-    <div class="relative col-span-2 sm:col-span-1 m-auto sm:m-0 w-full md:max-w-96 ">
+    <!-- Barra de pesquisa responsiva -->
+    <div class="relative  w-full xl:max-w-96 lg:max-w-[600px]  hidden lg:flex lg:m-auto  items-center justify-center">
         <input type="text" class="border w-full px-4 py-2 focus:outline-none text-gray-600 pr-14" placeholder="Pesquisar">
-
         <button class="absolute text-gray-800 right-4 text-2xl top-1/2 transform -translate-y-1/2">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </div>
-    
-    <!-- menu Btn -->
-    <button onclick="OpenMenu()" class="p-2 text-3xl row-start-1 ml-auto sm:ml-0">
+
+    <!-- Botão do menu para telas menores -->
+    <button onclick="OpenMenu()" class="p-2 text-3xl ml-auto xl:hidden">
         <i class="fa-solid fa-bars"></i>
     </button>
 </div>
-
 
 <!-- componente Ticker -->
 <%- include('../ticker/ticker.ejs') %>
@@ -37,17 +34,12 @@
 <!-- Menu lateral -->
 <%- include('../sidebar/sidebar.ejs') %>
 
-
-
-
 <script>
     function OpenMenu(){
-        let lateralMenu = document.getElementById('lateralMenu')
-        
-        lateralMenu.style.display = 'block'
+        let lateralMenu = document.getElementById('lateralMenu');
+        lateralMenu.style.display = 'block';
         setTimeout(() => {
-            lateralMenu.style.right = '0px'
+            lateralMenu.style.right = '0px';
         }, 50);
-
     }
 </script>

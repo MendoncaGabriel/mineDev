@@ -1,0 +1,29 @@
+<button class="fixed bottom-8 right-8 p-2 bg-gray-800 rounded-full w-14 h-14 hidden z-50" id="scrollTopBtn" onclick="scrollToTop()">
+    <img src="/icons/icons8-acima-52.png" alt="botão voltar ao topo">
+</button>
+
+<script>
+var scrollTopBtn = document.getElementById('scrollTopBtn');
+
+function handleScroll() {
+    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+
+    if (currentScroll > 100) {
+        scrollTopBtn.classList.remove('hidden');
+    } else {
+        scrollTopBtn.classList.add('hidden');
+    }
+}
+
+function scrollToTop() {
+    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+
+    if (currentScroll > 0) {
+        // Ajuste o valor de 20 para a quantidade desejada de pixels a serem rolados em cada intervalo
+        window.scrollTo(0, currentScroll - 40);
+        setTimeout(scrollToTop, 5);  // Ajuste o valor de 10 para a velocidade desejada
+    }
+}
+
+window.addEventListener('scroll', handleScroll);
+</script>

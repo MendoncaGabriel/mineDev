@@ -2,9 +2,67 @@ var express = require('express');
 var router = express.Router();
 const dateNow = require('../services/dateNow.js')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  const data = [
+const dataArticle = {
+  metadata: {
+    title: 'Como escolher o monitor de seu PC de acordo com suas necessidades?',
+    cover: 'https://img.freepik.com/fotos-premium/dispositivos-de-tecnologia-e-icones-conectados-ao-planeta-terra-digital_117023-449.jpg',
+    description: 'Page Description',
+    author: 'Author Name',
+    publicationDate: '2024-01-15', // ISO 8601 format
+    categories: ['Technology', 'Programming'],
+    tags: ['JavaScript', 'Web Development'],
+    views: 123
+  },
+  content: [
+    {
+      type: 'paragraph',
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur sed, repellat modi enim alias ipsa incidunt maxime perferendis sequi, repudiandae consequuntur cumque nobis ex porro quasi molestias ab doloribus tempore?.'
+    },
+    {
+      type: 'image',
+      src: 'https://img.freepik.com/fotos-premium/dispositivos-de-tecnologia-e-icones-conectados-ao-planeta-terra-digital_117023-449.jpg',
+      alt: 'Image Caption'
+    },
+    {
+      type: 'caption',
+      content: 'subtitulo'
+    },
+    {
+      type: 'paragraph',
+      content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis quo pariatur quos sunt nesciunt iusto ducimus quis dolore accusantium. Corporis quasi veritatis provident corrupti praesentium amet perspiciatis? Architecto temporibus commodi, beatae magni enim maxime! Praesentium esse, ea magnam aperiam error ducimus fugiat aliquam a, autem accusantium reiciendis dicta repellendus laudantium quod provident! Tempora ducimus eum cum, numquam debitis magni iusto error aspernatur. Dolor adipisci minus veritatis exercitationem expedita, at nihil! Eius dolor eum obcaecati magnam aspernatur laboriosam maxime vero ipsum placeat! Aspernatur, saepe nemo. Quas similique, optio a laborum alias perferendis excepturi nisi quo saepe, nulla tenetur ex fugit ipsa autem vitae aspernatur quasi, quam amet molestiae omnis! Porro commodi tenetur mollitia sit. Dolore harum eius omnis quis provident quidem dolores magnam. Impedit, molestias qui ex expedita optio perspiciatis sint debitis id tempore atque temporibus, voluptates ad at autem voluptatum a, facere mollitia inventore asperiores modi quod delectus excepturi. Eum fuga dolores quia nihil expedita illum iusto optio libero consectetur minus labore, vero voluptate delectus architecto a quisquam quidem, laboriosam quas porro pariatur numquam. Quam, nostrum. Vel sunt asperiores modi quae, eos ad culpa quo possimus necessitatibus, nihil nesciunt sint dolorem aliquid mollitia perferendis maiores vero ex neque ab in!'
+    },
+    {
+      type: 'list',
+      style: 'ordered', // or 'unordered'
+      items: ['Item 1', 'Item 2', 'Item 3']
+    },
+    {
+      type: 'link',
+      href: "#",
+      text: "link de teste aqui"
+    },
+    {
+      type: 'video',
+      src: "https://www.youtube.com/embed/kt-i08Aljlg?si=cKMfPpYN-_xlDBum",
+    },
+    {
+      type: 'quote',
+      content: "este e um componente de citação",
+    }
+    // Add more content objects as needed
+  ]
+};
+
+const dataHome = {
+  metadata: {
+    title: 'MineDev home',
+    description: 'Page Description',
+    author: 'Author Name',
+    categories: ['Technology', 'Programming'],
+    tags: ['JavaScript', 'Web Development'],
+    views: 123
+  },
+  articles: [
     {
       title: 'Introdução à Inteligência Artificial',
       date: '10/11/2024',
@@ -62,7 +120,15 @@ router.get('/', function(req, res, next) {
       img: 'https://telium.com.br//storage/resized/blog_posts/December2023-750x500/8QiU8tDdJKU785TPunWp.jpg'
     }
   ]
-  res.render('index', {dateNow: dateNow(), title: 'MineDev', articles: data});
+}
+
+
+
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+
+  res.render('index', {dateNow: dateNow(), data: dataHome});
 });
 
 router.get('/:article', function(req, res, next) {
@@ -71,49 +137,9 @@ router.get('/:article', function(req, res, next) {
 
   //pesquisar na base de dados por title e armazenar o resultado em data
 
-  const data = {
-    metadata: {
-      title: 'Como escolher o monitor de seu PC de acordo com suas necessidades?',
-      cover: 'https://img.freepik.com/fotos-premium/dispositivos-de-tecnologia-e-icones-conectados-ao-planeta-terra-digital_117023-449.jpg',
-      description: 'Page Description',
-      author: 'Author Name',
-      publicationDate: '2024-01-15', // ISO 8601 format
-      categories: ['Technology', 'Programming'],
-      tags: ['JavaScript', 'Web Development'],
-      views: 123
-    },
-    content: [
-      {
-        type: 'title',
-        content: 'Titulo do paragrafo'
-      },
-      {
-        type: 'caption',
-        content: 'subtitulo'
-      },
-      {
-        type: 'paragraph',
-        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur sed, repellat modi enim alias ipsa incidunt maxime perferendis sequi, repudiandae consequuntur cumque nobis ex porro quasi molestias ab doloribus tempore?.'
-      },
-      {
-        type: 'image',
-        src: 'https://img.freepik.com/fotos-premium/dispositivos-de-tecnologia-e-icones-conectados-ao-planeta-terra-digital_117023-449.jpg',
-        alt: 'Image Caption'
-      },
-      {
-        type: 'paragraph',
-        content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis quo pariatur quos sunt nesciunt iusto ducimus quis dolore accusantium. Corporis quasi veritatis provident corrupti praesentium amet perspiciatis? Architecto temporibus commodi, beatae magni enim maxime! Praesentium esse, ea magnam aperiam error ducimus fugiat aliquam a, autem accusantium reiciendis dicta repellendus laudantium quod provident! Tempora ducimus eum cum, numquam debitis magni iusto error aspernatur. Dolor adipisci minus veritatis exercitationem expedita, at nihil! Eius dolor eum obcaecati magnam aspernatur laboriosam maxime vero ipsum placeat! Aspernatur, saepe nemo. Quas similique, optio a laborum alias perferendis excepturi nisi quo saepe, nulla tenetur ex fugit ipsa autem vitae aspernatur quasi, quam amet molestiae omnis! Porro commodi tenetur mollitia sit. Dolore harum eius omnis quis provident quidem dolores magnam. Impedit, molestias qui ex expedita optio perspiciatis sint debitis id tempore atque temporibus, voluptates ad at autem voluptatum a, facere mollitia inventore asperiores modi quod delectus excepturi. Eum fuga dolores quia nihil expedita illum iusto optio libero consectetur minus labore, vero voluptate delectus architecto a quisquam quidem, laboriosam quas porro pariatur numquam. Quam, nostrum. Vel sunt asperiores modi quae, eos ad culpa quo possimus necessitatibus, nihil nesciunt sint dolorem aliquid mollitia perferendis maiores vero ex neque ab in!'
-      },
-      {
-        type: 'list',
-        style: 'ordered', // or 'unordered'
-        items: ['Item 1', 'Item 2', 'Item 3']
-      },
-      // Add more content objects as needed
-    ]
-  };
 
-  res.render('article', { data: data, dateNow: dateNow() });
+
+  res.render('article', { data: dataArticle, dateNow: dateNow() });
 });
 
 module.exports = router;
