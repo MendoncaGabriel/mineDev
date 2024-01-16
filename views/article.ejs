@@ -11,12 +11,12 @@
   <!-- font-awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-200 text-gray-700 text-lg leading-relaxed">
   <%- include('../components/navbar/navbar.ejs') %>
 
   <header class=" p-8 m-auto w-full max-w-screen-lg rounded-xl rounded-bl-none rounded-br-none block bg-white">
     <div class="relative">
-      <img src="<%= data.metadata.cover %>" alt="<%= data.metadata.title %>" class="w-full rounded-xl">
+      <img src="<%= data.metadata.cover %>" alt="<%= data.metadata.title %>" class="w-full aspect-video object-cover rounded-xl">
 
       <!-- Categorias -->
       <div class="absolute top-3 left-2">
@@ -29,26 +29,27 @@
     <section class="flex  justify-start items-center p-4 space-x-4">
       
       <!-- data de publicação -->
-      <div class=" flex items-center justify-center space-x-2   ">
+      <div class=" flex items-center justify-center space-x-2">
         <div class="text-red-700">
-            <i class="fa-solid fa-calendar-days"></i>
+          <i class="fa-solid fa-calendar-days"></i>
         </div>
         <p class="font-semibold"><%= data.metadata.publicationDate %></p>
       </div>
 
       <!-- visualizações -->
-      <div class="flex items-center space-x-2 justify-center    ">
+      <div class="flex items-center space-x-2 justify-center">
         <div class="text-red-700">
-            <i class="fa-solid fa-fire"></i>
+          <i class="fa-solid fa-fire"></i>
         </div>
         <h2 class="text-gray-700 font-semibold "><%= data.metadata.views %></h2>
       </div>
+
     </section>
     <h1 class="text-4xl font-semibold my-10"><%= data.metadata.title %></h1>
   </header>
 
 
-  <main class="p-8 m-auto w-full max-w-screen-lg rounded-xl block bg-white rounded-tl-none rounded-tr-none">
+  <main class="p-8 m-auto  w-full max-w-screen-lg rounded-xl block bg-white rounded-tl-none rounded-tr-none">
 
     
     <% data.content.forEach(element => { %>
@@ -65,12 +66,12 @@
 
       <!-- Paragrafo -->
       <% if(element.type === "paragraph"){ %>
-        <p class="my-5 text-gray-600 text-lg leading-relaxed"><%= element.content %></p>
+        <p class="my-5 "><%= element.content %></p>
       <% } %> 
       
       <!-- Imagem -->
       <% if(element.type === "image"){ %>
-        <img src="<%= element.src %>" alt="<%= element.alt %>" class="w-auto m-auto h-[50vh] rounded-xl">
+        <img src="<%= element.src %>" alt="<%= element.alt %>" class="w-auto max-w-[80%] m-auto aspect-video rounded-xl">
       <% } %> 
       
 

@@ -2,8 +2,3 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-@media (max-width: 1820px) {
-  .navHidden{
-    display: none;
-  }
-}
