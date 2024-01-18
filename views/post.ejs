@@ -37,7 +37,7 @@
   <!-- NAVBAR -->
   <%- include('../components/navbar/navbar.ejs') %>
 
-  <main class="p-4 m-auto w-full max-w-screen-2xl block border-2 border-blue-800">
+  <main class="p-4 m-auto w-full max-w-screen-2xl block border-2 border-blue-800 relative">
     <h1 class="text-3xl md:text-6xl font-semibold mb-8 lg:mb-16">NOVA POSTAGEM</h1>
   
     <!-- metadados -->
@@ -82,9 +82,23 @@
 
     </section>
 
-    <!-- Conteudo -->
-    <section class="bg-white p-8 my-8">
-      <h2>ESCREVER CONTEUDO</h2>
+    <div class="border-red-500 border p-4">
+
+      <!-- preview -->
+      <section id="preview" class="my-4 bg-white p-8   max-h-[75vh] overflow-auto" ">
+        <h2>TESTE MAIN</h2><br>
+        <div id="renderHeader" class="border m-auto max-w-screen-lg"></div>
+        <div id="renderMainTest" class="border m-auto max-w-screen-lg"></div>
+      </section>
+    </div>
+
+
+   
+    <section class="bg-white p-8 my-8 ">
+      <div class="flex justify-between px-8 py-4">
+        <h2>ESCREVER CONTEUDO</h2>
+        <button onclick="publish()" class="bg-gray-600 px-4 py-2 text-white">PUBLICAR</button>
+      </div>
 
       <!-- controles -->
       <section class="border p-4" id="buttonsTagControl">
@@ -97,26 +111,31 @@
         <button onclick="newControl('iframe', 'newIframe()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/iframe&gt;</button>
       </section>
 
-      <section class="border p-4" id="inputContent">
+      <section class="border p-4 min-h-[210px]" id="inputContent">
       </section>
 
     </section>
 
-    <section class="my-4 bg-white p-8">
-      <h2>TESTE MAIN</h2><br>
-      <div id="renderHeader" class="border m-auto max-w-screen-lg"></div>
-      <div id="renderMainTest" class="border m-auto max-w-screen-lg"></div>
-    </section>
+
 
   </main>
 
 
-  <!-- Footer -->
-  <%- include('../components/footer/footer.ejs') %>
 </body>
 </html>
 
 <script>
+function scrollDownPreview() {
+    // Encontrar o elemento pelo ID
+    var elementoPreview = document.getElementById('preview');
+
+    // Rolar para o final do elemento
+    elementoPreview.scrollTop = elementoPreview.scrollHeight;
+}
+
+
+
+
 
 function stringToArray(inputString, delimiter) {
     // Verifica se a string e o delimitador são fornecidos
@@ -128,13 +147,11 @@ function stringToArray(inputString, delimiter) {
     // Usa o método split para dividir a string em um array usando o delimitador
     const arrayResult = inputString.split(delimiter);
 
-    // Remove espaços em branco ao redor de cada item no array
-    const trimmedArray = arrayResult.map(item => item.trim());
+    // Remove espaços em branco ao redor de cada item no array e filtra elementos vazios
+    const trimmedArray = arrayResult.map(item => item.trim()).filter(Boolean);
 
     return trimmedArray;
-  }
-    
-
+}
 
   function saveHeader(){
     if(document.getElementById('title').value){
@@ -165,6 +182,7 @@ function stringToArray(inputString, delimiter) {
 
 
     renderHeader()
+    scrollDownPreview()
   }
 
 function newControl(name, func) {
@@ -234,6 +252,8 @@ function newControl(name, func) {
         }
       }).join('')}
     </main>`;
+
+    scrollDownPreview()
 }
 
 function renderHeader(){
@@ -334,6 +354,28 @@ function renderHeader(){
     clearControlInput()
   }
 
+
+
+
+  function publish(){
+    fetch('/publishpost', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'  
+      },
+      body: JSON.stringify(post)  
+    })
+    .then(response => {
+      // Tratar a resposta da solicitação, se necessário
+      alert('Solicitação publicada com sucesso!');
+      console.log('Solicitação publicada com sucesso!', response);
+    })
+    .catch(error => {
+      // Lidar com erros na solicitação
+      alert('Erro ao publicar');
+      console.error('Erro ao publicar:', error);
+    });
+  }
 
 </script>
 

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const dateNow = require('../services/dateNow.js')
+const postSchema = require('../database/model/postSchema.js')
 
 const dataArticle = {
   metadata: {
@@ -149,6 +150,27 @@ router.get('/:article', function(req, res, next) {
   //pesquisar na base de dados por title e armazenar o resultado em data
   res.render('article', { data: dataArticle, dateNow: dateNow() });
 });
+
+router.post('/publishpost', async (req, res) => {
+  try {
+    // Extrair os dados do corpo da solicitação
+    const postData = req.body;
+
+    // Criar uma nova instância do modelo Post
+    const newPost = new Post(postData);
+
+    // Salvar o post no banco de dados
+    const savedPost = await newPost.save();
+
+    // Responder com o post salvo
+    res.status(201).json(savedPost);
+  } catch (error) {
+    console.error('Erro ao publicar o post:', error);
+    res.status(500).json({ error: 'Erro ao processar a solicitação' });
+  }
+});
+
+module.exports = router;
 
 
 module.exports = router;
