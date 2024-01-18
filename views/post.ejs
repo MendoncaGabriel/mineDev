@@ -132,11 +132,6 @@ function scrollDownPreview() {
     // Rolar para o final do elemento
     elementoPreview.scrollTop = elementoPreview.scrollHeight;
 }
-
-
-
-
-
 function stringToArray(inputString, delimiter) {
     // Verifica se a string e o delimitador são fornecidos
     if (!inputString || !delimiter) {
@@ -152,8 +147,7 @@ function stringToArray(inputString, delimiter) {
 
     return trimmedArray;
 }
-
-  function saveHeader(){
+function saveHeader(){
     if(document.getElementById('title').value){
       post.metadata.title = document.getElementById('title').value
     }
@@ -184,7 +178,6 @@ function stringToArray(inputString, delimiter) {
     renderHeader()
     scrollDownPreview()
   }
-
 function newControl(name, func) {
   console.log(name);
 
@@ -216,17 +209,13 @@ function newControl(name, func) {
   `;
 }
 
-
-  
-  function clearControlInput(){
+function clearControlInput(){
     let inputContent = document.getElementById('inputContent')
     inputContent.innerHTML = ''
 
     renderMain(post)
   }
-
-  
-  function renderMain(dataContent) {
+function renderMain(dataContent) {
   const renderMainTest = document.getElementById('renderMainTest');
   renderMainTest.innerHTML = `
     
@@ -255,7 +244,6 @@ function newControl(name, func) {
 
     scrollDownPreview()
 }
-
 function renderHeader(){
   const renderHeader = document.getElementById('renderHeader')
   renderHeader.innerHTML = `
@@ -293,89 +281,81 @@ function renderHeader(){
   `
 }
 
+function newH2(){
 
+  post.content.push({
+    type: 'caption',
+    content: document.getElementById('inputPostText').value
+  })
+  clearControlInput()
+}
+function newA(){
+  post.content.push({
+    type: 'link',
+    href: document.getElementById('inputPostLink').value,
+    text: document.getElementById('inputPostText').value
+  })
+  clearControlInput()
+}
+function newP(){
+  post.content.push( {
+    type: 'paragraph',
+    content: document.getElementById('inputPostText').value
+  })
+  clearControlInput()
+}
+function newQuote(){
+  post.content.push({
+    type: 'quote',
+    content: document.getElementById('inputPostText').value,
+  })
+  clearControlInput()
+}
+function newUl(){
+    
 
+  post.content.push(    {
+    type: 'list',
+    style: 'ordered', // or 'unordered'
+    items: stringToArray(document.getElementById('inputPostText').value, ';') //['Item 1', 'Item 2', 'Item 3']
+  })
+  clearControlInput()
+}
+function newImg(){
+  post.content.push({
+    type: 'image',
+    src: document.getElementById('inputPostText').value,
+    alt: 'Imagem ilustrativa',
+  })
+  clearControlInput()
+}
+function newIframe(){
+  post.content.push({
+    type: 'video',
+    src: document.getElementById('inputPostText').value,
+  })
+  clearControlInput()
+}
 
-
-
-  function newH2(){
-  
-    post.content.push({
-      type: 'caption',
-      content: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
-  }
-  function newA(){
-    post.content.push({
-      type: 'link',
-      href: document.getElementById('inputPostLink').value,
-      text: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
-  }
-  function newP(){
-    post.content.push( {
-      type: 'paragraph',
-      content: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
-  }
-  function newQuote(){
-    post.content.push({
-      type: 'quote',
-      content: document.getElementById('inputPostText').value,
-    })
-    clearControlInput()
-  }
-  function newUl(){
-      
-
-    post.content.push(    {
-      type: 'list',
-      style: 'ordered', // or 'unordered'
-      items: stringToArray(document.getElementById('inputPostText').value, ';') //['Item 1', 'Item 2', 'Item 3']
-    })
-    clearControlInput()
-  }
-  function newImg(){
-    post.content.push({
-      type: 'image',
-      src: document.getElementById('inputPostText').value,
-      alt: 'Imagem ilustrativa',
-    })
-    clearControlInput()
-  }
-  function newIframe(){
-    post.content.push({
-      type: 'video',
-      src: document.getElementById('inputPostText').value,
-    })
-    clearControlInput()
-  }
-
-
-
-
-  function publish(){
-    fetch('/publishpost', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'  
-      },
-      body: JSON.stringify(post)  
-    })
-    .then(response => {
-      // Tratar a resposta da solicitação, se necessário
-      alert('Solicitação publicada com sucesso!');
-      console.log('Solicitação publicada com sucesso!', response);
-    })
-    .catch(error => {
-      // Lidar com erros na solicitação
-      alert('Erro ao publicar');
-      console.error('Erro ao publicar:', error);
-    });
-  }
+function publish(){
+  fetch('/publishPost', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'  
+    },
+    body: JSON.stringify(post)  
+  })
+  .then(response => {
+    // Tratar a resposta da solicitação, se necessário
+    alert('Solicitação publicada com sucesso!');
+    console.log('Solicitação publicada com sucesso!', response);
+  })
+  .catch(error => {
+    // Lidar com erros na solicitação
+    alert('Erro ao publicar');
+    console.error('Erro ao publicar:', error);
+  });
+}
 
 </script>
 
