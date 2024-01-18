@@ -126,20 +126,29 @@ const dataHome = {
 
 
 /* GET home page. */
+
+
+router.get('/publicar/post', async (req, res) => {
+ 
+
+  
+  res.render('post', {dateNow: dateNow()});
+});
 router.get('/', function(req, res, next) {
 
   res.render('index', {dateNow: dateNow(), data: dataHome});
 });
+
+
+
 
 router.get('/:article', function(req, res, next) {
   const article = req.params.article
   const articleName = article.replace(/-/g, ' ')
 
   //pesquisar na base de dados por title e armazenar o resultado em data
-
-
-
   res.render('article', { data: dataArticle, dateNow: dateNow() });
 });
+
 
 module.exports = router;

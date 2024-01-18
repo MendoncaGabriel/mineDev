@@ -45,7 +45,7 @@
         <div class="text-red-700">
           <i class="fa-solid fa-fire"></i>
         </div>
-        <h2 class="text-gray-700 font-semibold"><%= data.metadata.views %></h2>
+        <p class="text-gray-700 font-semibold"><%= data.metadata.views %></p>
       </div>
 
     </section>
@@ -56,32 +56,39 @@
   <main class="lg:p-8 lg:pt-1 p-4 m-auto max-w-screen-lg bg-white   rounded-bl-xl rounded-br-xl pt-1">
 
     <% data.content.forEach(element => { %>
+      <!-- Subtítulo -->
       <% if(element.type === "caption"){ %>
-        <h3 class="my-2 lg:text-xl text-lg font-semibold"><%= element.content %></h3> <!-- Subtítulo -->
+        <h2 class="my-2 lg:text-xl text-lg font-semibold"><%= element.content %></h2> 
 
+      <!-- Parágrafo -->
       <% } else if(element.type === "paragraph"){ %>
-        <p class="my-2 "><%= element.content %></p>  <!-- Parágrafo -->
+        <p class="my-2 "><%= element.content %></p>  
 
+      <!-- Imagem -->
       <% } else if(element.type === "image"){ %>
-        <img src="<%= element.src %>" alt="<%= element.alt %>" class="lg:w-auto max-w-[640px] w-full m-auto aspect-video "> <!-- Imagem -->
+        <img src="<%= element.src %>" alt="<%= element.alt %>" class="lg:w-auto max-w-[640px] w-full m-auto aspect-video "> 
 
+      <!-- Lista -->
       <% } else if(element.type === "list"){ %>
         <ul class="list-disc p-2"> 
           <% element.items.forEach(item => { %>
             <li><%= item %></li>
           <% }) %>
-        </ul> <!-- Lista -->
+        </ul> 
         
+      <!-- Vídeo -->
       <% } else if(element.type === "video"){ %>
-      <iframe src="<%= element.src %>" frameborder="0" allowfullscreen class="m-auto w-full my-2 max-w-[640px] aspect-video"></iframe> <!-- Vídeo -->
+        <iframe src="<%= element.src %>" frameborder="0" allowfullscreen class="m-auto w-full my-2 max-w-[640px] aspect-video"></iframe> 
 
+      <!-- Citação -->
       <% } else if(element.type === "quote"){ %>
-      <blockquote class="my-4 italic"><%= element.content %></blockquote> <!-- Citação -->
+        <blockquote class="my-4 italic"><%= element.content %></blockquote> 
 
-      <% } else (element.type === "link"){ %>
-      <a href="<%= element.href %>" class="text-blue-500 hover:text-blue-700 underline"><%= element.text %></a> <!-- Link -->
-
+      <!-- Link -->
+      <% } else if(element.type === "link") { %>
+        <a href="<%= element.href %>" class="text-blue-500 hover:text-blue-700 underline"><%= element.text %></a> 
       <% } %>
+      
     <% }) %>
 
   </main>

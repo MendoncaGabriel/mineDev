@@ -23,8 +23,10 @@
         </button>
     </div>
 
-
-    <h2 class="text-white text-center py-2 absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full"><%= dateNow  %></h2>
+    <% if (typeof dateNow !== 'undefined' && dateNow ) { %>
+     
+        <h2 class="text-white text-center py-2 absolute bottom-2 left-1/2 transform -translate-x-1/2 w-full"><%= dateNow  %></h2>
+    <% } %>
 
 </aside>
 
