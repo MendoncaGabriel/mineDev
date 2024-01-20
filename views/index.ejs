@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= data.metadata.description%>">
-  <title><%= data.metadata.title %></title>
+  <meta name="description" content="<%= description %>">
+  <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/output.css' />
   <link rel='stylesheet' href='/stylesheets/style.css' />
 
@@ -20,7 +20,7 @@
     <h1 class="text-3xl md:text-6xl font-semibold mb-8 lg:mb-16">Principais Artigos</h1>
   
     <!-- GRID -->
-    <%- include('../components/grid/grid.ejs', {data: data.articles}) %>
+    <%- include('../components/grid/grid.ejs', {data: articles}) %>
 
   </main>
 

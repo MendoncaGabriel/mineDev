@@ -1,36 +1,34 @@
-<a href="/<%= data.title.replace(/ /g, '-')  %>" class="hover:scale-[102%] duration-300">
-
-
-
-
+<a href="/<%= data.metadata.title.replace(/ /g, '-')  %>" class="hover:scale-[102%] duration-300">
     <div class="overflow-hidden rounded-lg bg-white hover:shadow-xl duration-300 max-w-sm m-auto">
-        <img src="<%= data.img %>" alt="capa de artigo" class="h-72 w-full object-cover">
+        <img src="<%= data.metadata.cover %>" alt="capa de artigo" class="h-72 w-full object-cover">
 
         <!-- data de publicação -->
         <div class="pt-4 flex items-center justify-center space-x-2 m-auto">
             <div class="text-red-700">
                 <i class="fa-solid fa-calendar-days"></i>
             </div>
-            <p class="font-semibold text-gray-600"><%= data.date %></p>
+            <p class="font-semibold text-gray-600"><%= data.metadata.publicationDate %></p>
         </div>
 
         <div class="px-4 min-h-20 flex items-center">
-            <h2 class="text-gray-600 text-xl font-semibold text-center "><%= data.title %></h2>
+            <h2 class="text-gray-600 text-xl font-semibold text-center "><%= data.metadata.title %></h2>
         </div>
         
         <div class="p-4   mt-4 flex items-center justify-between bg-red-700">
-            <h2 class="text-white  font-semibold  z-10 w-[80%] text-left " >
-               <%= data.theme %>
-           </h2>
+            <div class="text-white  font-semibold  z-10 w-[80%] text-left flex " >
+
+                <% for( let i = 0; i < data.metadata.categories.length; i++ ) { %>
+                    <p class="p-2"><%= data.metadata.categories[i] %></p>
+                <% } %>
+               
+            </div>
 
             <div class="flex items-center space-x-2 justify-end">
                 <div class="text-white">
                     <i class="fa-solid fa-fire"></i>
                 </div>
-                <h2 class="text-white font-semibold "><%= data.views %></h2>
+                <h2 class="text-white font-semibold "><%= data.metadata.views %></h2>
             </div>
         </div>
-
     </div>
-
 </a>

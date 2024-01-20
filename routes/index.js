@@ -123,50 +123,52 @@ const dataHome = {
   ]
 }
 
+//HOME
+router.get('/', function(req, res) {
 
+  postSchema.find({}).limit(20)
+  .then((doc)=>{
+    if(doc){
+      res.render('index', {
+        dateNow: dateNow(), 
+        articles: doc,
+        title: 'Mine dev Blog',
+        description: 'descrição para minedevBlog'
+      })
+      console.log(doc)
+    }else{
+      res.render('404', {msg: 'Sem posts'})
+    }
+  })
+  .catch((err)=>{
+    res.render('404', {msg: 'Erro interno no servidor: ' + err})
+  })
 
-
-/* GET home page. */
-
-
-router.get('/publicar/post', async (req, res) => {
- 
-
-  
-  res.render('post', {dateNow: dateNow()});
-});
-router.get('/', function(req, res, next) {
-
-  res.render('index', {dateNow: dateNow(), data: dataHome});
-});
-
-
-
-
-router.get('/:article', function(req, res, next) {
-  const article = req.params.article
-  const articleName = article.replace(/-/g, ' ')
-
-  //pesquisar na base de dados por title e armazenar o resultado em data
-  res.render('article', { data: dataArticle, dateNow: dateNow() });
 });
 
 
 
-router.post('/publishPost', async (req, res) => {
-  try {
-    const postData = req.body;
-    const newPost = new Post(postData);
-    const savedPost = await newPost.save();
-    res.status(201).json(savedPost);
-  } 
-  catch (error) {
-    console.error('Erro ao publicar o post:', error);
-    res.status(500).json({ error: 'Erro ao processar a solicitação' });
-  }
+//ARTIGO
+router.get('/:article', (req, res) => {
+  const article = req.params.article;
+  const articleName = article.replace(/-/g, ' ');
+
+
+  postSchema.findOne({ 'metadata.title': articleName })
+  .then((doc) => {
+    if (doc) {
+      res.render('article', { data: doc, dateNow: dateNow() });
+      console.log('Post encontrado!');
+    } else {
+      res.status(404).render('404', { msg: 'Não encontrado!' });
+    }
+  })
+  .catch((err) => {
+    res.status(500).render('404', { msg: 'Erro no servidor: ' + err });
+  });
 });
 
-module.exports = router;
+
 
 
 module.exports = router;

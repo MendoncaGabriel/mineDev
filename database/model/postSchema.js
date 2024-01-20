@@ -7,12 +7,15 @@ const postSchema = new Schema({
     cover: String,
     description: String,
     author: String,
-    publicationDate: Date,
-    categories: [String],
+    publicationDate: String,
+    categories: [String], 
     tags: [String],
-    views: { type: Number, default: 0 }
+    views: {
+      type: Number,
+      default: 0,
+    },
   },
-  content: Array 
+  content: Array,
 });
 
 const Post = mongoose.model('Post', postSchema);
