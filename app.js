@@ -19,7 +19,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+//Servir aquivos estaticos da pasta public
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Servir arquivos estáticos da pasta 'components'
+app.use('/components', express.static(path.join(__dirname, 'components')));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
