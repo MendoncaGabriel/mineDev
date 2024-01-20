@@ -9,7 +9,7 @@ const postSchema = new Schema({
     author: String,
     publicationDate: String,
     categories: [String], 
-    tags: [String],
+    keywords: [String],
     views: {
       type: Number,
       default: 0,

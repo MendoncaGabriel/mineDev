@@ -26,7 +26,7 @@
         author: '',
         publicationDate: '',
         categories: [],
-        tags: [],
+        keywords: [],
         views: 0,
       },
       content: [],
@@ -37,7 +37,7 @@
   <!-- COMPONENTE: NAVBAR -->
   <%- include('../components/navbar/navbar.ejs') %>
 
-  <main class="p-4 m-auto w-full max-w-screen-2xl block border-2 border-blue-800 relative">
+  <main class="p-4 m-auto w-full max-w-screen-lg block  relative">
     <h1 class="text-3xl md:text-6xl font-semibold mb-8 lg:mb-16">NOVA POSTAGEM</h1>
   
     <!-- metadados -->
@@ -72,10 +72,10 @@
         <input id="categories" type="text" class="px-4 py-2 " placeholder="categ1; categ2; categ3;">
       </div>
 
-      <!-- Tags -->
+      <!-- Palavras chaves -->
       <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Tags:</label>
-        <input id="tags" type="text" class="px-4 py-2 " placeholder="tag1; tag2; tag3;">
+        <label for="">Keywords:</label>
+        <input id="keywords" type="text" class="px-4 py-2 " placeholder="tag1; tag2; tag3;">
       </div>
 
       <!-- Btn Salvar Header -->
@@ -83,12 +83,12 @@
 
     </section>
 
-    <div class="border-red-500 border p-4">
+    <div class=" my-8">
 
       <!-- preview -->
       <section id="preview" class="my-4 bg-white p-8   max-h-[75vh] overflow-auto" ">
-        <h2>TESTE MAIN</h2><br>
-        <div id="renderHeader" class="border m-auto max-w-screen-lg"></div>
+        <h2 class="text-gray-600 text-center my-4 font-semibold">PREVIEW</h2>
+        <div id="renderHeader" class=" m-auto max-w-screen-lg"></div>
         <div id="renderMainTest" class="border m-auto max-w-screen-lg"></div>
       </section>
     </div>
@@ -102,7 +102,7 @@
       </div>
 
       <!-- controles -->
-      <section class="border p-4" id="buttonsTagControl">
+      <section class="my-4" id="buttonsTagControl">
         <button onclick="newControl('h2', 'newH2()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/h2&gt;</button>
         <button onclick="newControl('a', 'newA()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/a&gt;</button>
         <button onclick="newControl('p', 'newP()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/p&gt;</button>
@@ -143,15 +143,8 @@
     return [];
   }
 
-  // Substitui os caracteres específicos pelo delimitador
-  const treatedInput = inputString
-    .replace(/:/g, delimiter)
-    .replace(/,/g, delimiter)
-    .replace(/\./g, delimiter)
-    .replace(/-/g, delimiter);
-
   // Usa o método split para dividir a string em um array usando o delimitador
-  const arrayResult = treatedInput.split(delimiter);
+  const arrayResult = inputString.split(delimiter);
 
   // Remove espaços em branco ao redor de cada item no array e filtra elementos vazios
   const trimmedArray = arrayResult.map(item => item.trim()).filter(Boolean);
@@ -190,8 +183,8 @@
     if(document.getElementById('categories').value){
       post.metadata.categories = stringToArray(document.getElementById('categories').value)
     }
-    if(document.getElementById('tags').value){
-      post.metadata.tags = stringToArray(document.getElementById('tags').value)
+    if(document.getElementById('keywords').value){
+      post.metadata.keywords = stringToArray(document.getElementById('keywords').value)
     }
     
     renderHeader()

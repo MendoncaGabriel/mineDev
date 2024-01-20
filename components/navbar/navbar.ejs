@@ -1,35 +1,54 @@
-<div class="py-4 lg:px-16 px-8 bg-gray-800 text-gray-100 flex items-center sm:justify-between text-lg">
-    <a href="/" class="flex-none">
-        <img src="https://geekblog.com.br/wp-content/uploads/2020/07/logo-geekblog.png.webp" alt="logo" class="h-16 flex-none">
-    </a>
-
-    <!-- Navegação principal -->
-    <nav class="hidden xl:flex space-x-4 xl:text-sm 2xl:text-lg h-full">
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Início</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Artigos</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Tutoriais</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Recursos</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Sobre nós</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Contato</a>
-        <a class="border-b-4 pt-1 hover:border-red-500 border-gray-800 pb-1 duration-100 ease-linear" href="#">Política de Privacidade</a>
-    </nav>
-
-    <!-- Barra de pesquisa responsiva -->
-    <div class="relative  w-full xl:max-w-96 lg:max-w-[600px]  hidden lg:flex lg:m-auto  items-center justify-center">
-        <input type="text" class="border w-full px-4 py-2 focus:outline-none text-gray-600 pr-14" placeholder="Pesquisar">
-        <button class="absolute text-gray-800 right-4 text-2xl top-1/2 transform -translate-y-1/2">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-    </div>
-
-    <!-- Botão do menu para telas menores -->
-    <button onclick="OpenMenu()" class="p-2 text-3xl ml-auto xl:hidden">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-</div>
-
 <!-- componente Ticker -->
 <%- include('../ticker/ticker.ejs') %>
+
+<div class="mb-4">
+    <div class="py-2 lg:px-16 px-8 bg-gray-800 text-gray-100 flex items-center justify-between text-lg">
+        <a href="/" >
+            <img src="https://geekblog.com.br/wp-content/uploads/2020/07/logo-geekblog.png.webp" alt="logo" class=" h-14 flex-none">
+        </a>
+    
+        
+
+     
+        
+        
+        <span class="flex space-x-4  items-center">
+           
+            <!-- Barra de pesquisa -->
+            <div class="relative  hidden lg:flex   items-center justify-center w-[400px] ">
+                <input type="text" class="w-full px-4 py-1 focus:outline-none text-gray-600 pr-14 " placeholder="Pesquisar">
+                <button class="absolute text-gray-800 right-4 text-2xl top-1/2 transform -translate-y-1/2 ">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+    
+            <!-- Menu -->
+            <button onclick="OpenMenu()" class="p-2 md:text-4xl text-3xl hover:text-red-500 duration-200 ">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </span>
+    
+    </div>
+    
+    <div class="py-1 lg:px-16 px-8 bg-gray-700 text-gray-100   sm:justify-between text-sm border-b hidden lg:flex items-center justify-between ">
+        <!-- Navegação principal -->
+        <nav class="hidden xl:flex space-x-4  h-full pt-2">
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Início</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Artigos</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Tutoriais</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Recursos</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Sobre nós</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Contato</a>
+            <a class="border-b-4 hover:border-red-500  border-gray-700 pb-px duration-100 ease-linear" href="#">Política de Privacidade</a>
+        </nav>
+
+        <!-- data de hoje -->
+        <h2 class="text-white text-center py-2  "><%= dateNow  %></h2>
+    
+    </div>
+</div>
+
+
 
 <!-- Menu lateral -->
 <%- include('../sidebar/sidebar.ejs') %>

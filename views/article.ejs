@@ -30,22 +30,29 @@
       </div>
     </div>
 
-    <section class="flex justify-start items-center p-4 space-x-4">
+    <section class="flex justify-between items-center" >
 
-      <!-- Data de publicação -->
-      <div class="flex items-center space-x-2">
-        <div class="text-red-700">
-          <i class="fa-solid fa-calendar-days"></i>
+      <div class="flex justify-start items-center p-4 space-x-4">
+        <!-- Data de publicação -->
+        <div class="flex items-center space-x-2">
+          <div class="text-red-700">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <p class="font-semibold"><%= data.metadata.publicationDate %></p>
         </div>
-        <p class="font-semibold"><%= data.metadata.publicationDate %></p>
+
+        <!-- Visualizações -->
+        <div class="flex items-center space-x-2 ">
+          <div class="text-red-700">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <p class="text-gray-700 font-semibold"><%= data.metadata.views %></p>
+        </div>
       </div>
 
-      <!-- Visualizações -->
       <div class="flex items-center space-x-2">
-        <div class="text-red-700">
-          <i class="fa-solid fa-fire"></i>
-        </div>
-        <p class="text-gray-700 font-semibold"><%= data.metadata.views %></p>
+        <i class="fa-solid fa-user"></i>
+        <h2 class="text-sm font-semibold text-gray-600"><%= data.metadata.author %></h2>
       </div>
 
     </section>
@@ -91,7 +98,23 @@
       
     <% }) %>
 
+
+    <!-- Palavras chaves -->
+    <section class="mt-8">
+      <h2 class="text-center text-lg text-gray-600">Palavras relacionadas</h2>
+      <hr><br>
+
+      <div class="space-x-4 space-y-10 border border-red-500  px-4">
+        <% for( let i = 0; i < data.metadata.keywords.length; i++ ) { %>
+          <span class="px-2 py-1 bg-gray-600 text-gray-100 font-medium text-sm my-4"><%= data.metadata.keywords[i]  %></span>
+          <% } %>
+        </section>
+      </div>
+
   </main>
+
+
+
 
   <!-- FOOTER -->
   <%- include('../components/footer/footer.ejs') %>
