@@ -104,9 +104,9 @@
       <h2 class="text-center text-lg text-gray-600">Palavras relacionadas</h2>
       <hr><br>
 
-      <div class="space-x-4 space-y-10 border border-red-500  px-4">
+      <div class="space-x-4   px-4">
         <% for( let i = 0; i < data.metadata.keywords.length; i++ ) { %>
-          <span class="px-2 py-1 bg-gray-600 text-gray-100 font-medium text-sm my-4"><%= data.metadata.keywords[i]  %></span>
+          <p class="px-2 py-1 bg-gray-600 text-gray-100 font-medium text-sm  inline-block my-2"><%= data.metadata.keywords[i]  %></p>
           <% } %>
         </section>
       </div>
