@@ -1,381 +1,110 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Novo Post">
-  <title>Novo Post 2</title>
-  <link rel='stylesheet' href='/stylesheets/output.css' />
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-
-  <!-- font-awesome Icons -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-
-  <!-- TAILWINDCSS -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <title>NOVO POST</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-900">
+  <main class="bg-gray-400 max-w-screen-lg p-8 m-auto space-y-8">
+    <header class="space-y-4">
+      <h2 class="text-lg font-semibold">CABEÇALHO</h2>
 
-  <script>
-    let post = {
-      metadata: {
-        title: '',
-        cover: '',
-        description: '',
-        author: '',
-        publicationDate: '',
-        categories: [],
-        keywords: [],
-        views: 0,
-      },
-      content: [],
-    };
-  </script>
-
-
-  <!-- COMPONENTE: NAVBAR -->
-  <%- include('../components/navbar/navbar.ejs') %>
-
-  <main class="p-4 m-auto w-full max-w-screen-lg block  relative">
-    <h1 class="text-3xl md:text-6xl font-semibold mb-8 lg:mb-16">NOVA POSTAGEM</h1>
-  
-    <!-- metadados -->
-    <section class="grid grid-cols-3 gap-4 w-full ">
-      <!-- titulo -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Titulo:</label>
-        <input id="title" type="text" class="px-4 py-2 " >
+      <div class="flex flex-col">
+        <label for="titleHeader">Titulo:</label>
+        <input id="titleHeader" type="text" class="px-4 py-2 border bg-gray-200">
       </div>
 
-      <!-- capa -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Capa:</label>
-        <input id="cover" type="text" class="px-4 py-2 " >
+      <div class="flex flex-col">
+        <label for="coverHeader">CAPA:</label>
+        <input id="coverHeader" type="text" class="px-4 py-2 border bg-gray-200">
       </div>
 
-      <!-- Descrição -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Descrição:</label>
-        <input id="description" type="text" class="px-4 py-2 " >
+      <div class="flex flex-col">
+        <label for="descriptionHeader">DESCRIÇÃO:</label>
+        <textarea name="" id="descriptionHeader" cols="30" rows="5" class="border bg-gray-200 p-4"></textarea>
+      </div>
+      
+      <div class="flex flex-col">
+        <label for="authorHeader">AUTOR:</label>
+        <select class="border bg-gray-200" id="authorHeader">
+          <option selected value="Gabriel Andrade">Gabriel Andrade</option>
+        </select>
       </div>
 
-      <!-- Autor -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Autor:</label>
-        <input id="author" type="text" class="px-4 py-2 " >
+      <div class="flex flex-col">
+        <label for="categoriesHeader">CATEGORIAS:</label>
+        <input id="categoriesHeader" type="text" class="px-4 py-2 border bg-gray-200" placeholder="categoria 1; categoria 2; categoria 3">
       </div>
 
-      <!-- Categorias -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Categorias:</label>
-        <input id="categories" type="text" class="px-4 py-2 " placeholder="categ1; categ2; categ3;">
+      <div class="flex flex-col">
+        <label for="">PALAVRAS CHAVE:</label>
+        <input id="keywordsHeader" type="text" class="px-4 py-2 border bg-gray-200" placeholder="keyword 1; keyword 2; keyword 3">
       </div>
+    </header>
+    <hr class="border border-black">
 
-      <!-- Palavras chaves -->
-      <div class="grid grid-cols-1 m-auto w-full">
-        <label for="">Keywords:</label>
-        <input id="keywords" type="text" class="px-4 py-2 " placeholder="tag1; tag2; tag3;">
+    <section class="space-y-4 border">
+      <h2 class="text-lg font-semibold">CONTEUDO</h2>
+
+      <!-- CONTEUDO -->
+      <section id="contentSection" class="border border-black p-4"></section>
+
+      <!-- CONTROLES -->
+      <div class="border p-4">
+        <button onclick="newContent('h2')" class="px-4 py-1 bg-gray-600 text-white font-semibold">h2</button>
+        <button class="px-4 py-1 bg-gray-600 text-white font-semibold">li</button>
+        <button class="px-4 py-1 bg-gray-600 text-white font-semibold">img</button>
+        <button class="px-4 py-1 bg-gray-600 text-white font-semibold">iframe</button>
       </div>
-
-      <!-- Btn Salvar Header -->
-      <button onclick="saveHeader()" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-500">Salvar</button>
-
     </section>
-
-    <div class=" my-8">
-
-      <!-- preview -->
-      <section id="preview" class="my-4 bg-white p-8   max-h-[75vh] overflow-auto" ">
-        <h2 class="text-gray-600 text-center my-4 font-semibold">PREVIEW</h2>
-        <div id="renderHeader" class=" m-auto max-w-screen-lg"></div>
-        <div id="renderMainTest" class="border m-auto max-w-screen-lg"></div>
-      </section>
-    </div>
-
-
-   
-    <section class="bg-white p-8 my-8 ">
-      <div class="flex justify-between px-8 py-4">
-        <h2>ESCREVER CONTEUDO</h2>
-        <button onclick="publish()" class="bg-gray-600 px-4 py-2 text-white">PUBLICAR</button>
-      </div>
-
-      <!-- controles -->
-      <section class="my-4" id="buttonsTagControl">
-        <button onclick="newControl('h2', 'newH2()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/h2&gt;</button>
-        <button onclick="newControl('a', 'newA()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/a&gt;</button>
-        <button onclick="newControl('p', 'newP()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/p&gt;</button>
-        <button onclick="newControl('quote', 'newQuote()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/quote&gt;</button>
-        <button onclick="newControl('ul', 'newUl()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/ul&gt;</button>
-        <button onclick="newControl('img', 'newImg()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/img&gt;</button>
-        <button onclick="newControl('iframe', 'newIframe()')" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">&lt;/iframe&gt;</button>
-      </section>
-
-      <section class="border p-4 min-h-[210px]" id="inputContent">
-      </section>
-
-    </section>
-
-
-
   </main>
-
-
 </body>
 </html>
 
+
 <script>
-  function scrollDownPreview() {
-      // Encontrar o elemento pelo ID
-      var elementoPreview = document.getElementById('preview');
-
-      // Rolar para o final do elemento
-      elementoPreview.scrollTop = elementoPreview.scrollHeight;
-  }
-  
-  function stringToArray(inputString) {
-  const delimiter = ';';
-
-  // Verifica se a string e o delimitador são fornecidos
-  if (!inputString || !delimiter) {
-    console.error('String e/ou delimitador não fornecidos.');
-    return [];
+  function getData(){
+    return {
+      metadata:{
+        title: document.getElementById('titleHeader').value,
+        cover: document.getElementById('coverHeader').value,
+        description: document.getElementById('descriptionHeader').value,
+        author: document.getElementById('authorHeader').value,
+        author: document.getElementById('authorHeader').value,
+        categories: document.getElementById('categoriesHeader').value.split(';'),
+        keywords: document.getElementById('keywordsHeader').value.split(';')
+      },
+      content:[]
+    }
   }
 
-  // Usa o método split para dividir a string em um array usando o delimitador
-  const arrayResult = inputString.split(delimiter);
 
-  // Remove espaços em branco ao redor de cada item no array e filtra elementos vazios
-  const trimmedArray = arrayResult.map(item => item.trim()).filter(Boolean);
 
-  return trimmedArray;
-}
-  
-  function publicationDateNow() {
-    function adicionarZero(numero) {
-      return numero < 10 ? '0' + numero : numero;
-    }
-    let dataAtual = new Date();
-    
-    let dia = adicionarZero(dataAtual.getDate());
-    let mes = adicionarZero(dataAtual.getMonth() + 1); 
-    let ano = dataAtual.getFullYear();
-
-    return dia + '/' + mes + '/' + ano;
-  }
-  
-  function saveHeader(){
-    post.metadata.publicationDate = publicationDateNow()
-
-    if(document.getElementById('title').value){
-      post.metadata.title = document.getElementById('title').value
-    }
-    if(document.getElementById('cover').value){
-      post.metadata.cover = document.getElementById('cover').value
-    }
-    if(document.getElementById('description').value){
-      post.metadata.description = document.getElementById('description').value
-    }
-    if(document.getElementById('author').value){
-      post.metadata.author = document.getElementById('author').value
-    }
-    if(document.getElementById('categories').value){
-      post.metadata.categories = stringToArray(document.getElementById('categories').value)
-    }
-    if(document.getElementById('keywords').value){
-      post.metadata.keywords = stringToArray(document.getElementById('keywords').value)
-    }
-    
-    renderHeader()
-    scrollDownPreview()
-  }
-
-  function newControl(name, func) {
-    console.log(name);
-
-    let inputContent = document.getElementById('inputContent');
-    let placeholderText = '';
-
-    if (name === 'ul') {
-      placeholderText = 'item 1; item 2; item 3';
-    } else if (name === 'img') {
-      placeholderText = 'link da imagem';
-    } else if (name === 'quote') {
-      placeholderText = 'citação...';
-    } else if (name === 'iframe') {
-      placeholderText = 'link do iframe';
-    } else {
-      placeholderText = '...';
+  let contId = 0
+  function newContent(type){
+    contId++
+    const contentSection = document.querySelector('#contentSection')
+    const data = {
+      type: type
     }
 
-    inputContent.innerHTML = `
-        <div class="p-2 border">
-            <div class="grid grid-cols-1 m-auto w-full space-y-2">
-                <label for="inputPostText">${name}:</label>
-                
-                ${name === 'a' ? '<input id="inputPostLink" class="px-4 py-2 border" type="text" placeholder="link...">' : ''}
-                <textarea id="inputPostText" name="" cols="30" rows="10" class="px-4 py-2 border min-h-20 h-20 max-h-40" style="max-height: 500px;" placeholder="${placeholderText}"></textarea>
-                <button onclick="${func}" class="px-4 py-2 bg-gray-600 hover:bg-gray-500 duration-300 text-white">salvar</button>
-            </div>
+
+    contentSection.innerHTML += ` 
+      <div id="content${contId}" name="${type}">
+        <div class="flex justify-between pb-2">
+          <h2 class="text-lg  px-4 py-1 bg-gray-600 text-white font-semibold">${data.type}</h2>
+          <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
         </div>
-    `;
-  }
-
-  function clearControlInput(){
-    let inputContent = document.getElementById('inputContent')
-    inputContent.innerHTML = ''
-
-    renderMain(post)
-  }
-  
-  function renderMain(dataContent) {
-    const renderMainTest = document.getElementById('renderMainTest');
-    renderMainTest.innerHTML = `
-      
-      <main class="lg:p-8 lg:pt-1 p-4 m-auto max-w-screen-lg bg-white rounded-bl-xl rounded-br-xl pt-1">
-        ${dataContent.content.map(element => {
-          if (element.type === "caption") {
-            return `<h2 class="my-2 lg:text-xl text-lg font-semibold">${element.content || ''}</h2>`;
-          } else if (element.type === "paragraph") {
-            return `<p class="my-2 ">${element.content || ''}</p>`;
-          } else if (element.type === "image") {
-            return `<img src="${element.src || ''}" alt="${element.alt || ''}" class="lg:w-auto max-w-[640px] w-full m-auto aspect-video">`;
-          } else if (element.type === "list") {
-            return `
-              <ul class="list-disc p-2"> 
-                ${element.items ? element.items.map(item => `<li>${item || ''}</li>`).join('') : ''}
-              </ul>`;
-          } else if (element.type === "video") {
-            return `<iframe src="${element.src || ''}" frameborder="0" allowfullscreen class="m-auto w-full my-2 max-w-[640px] aspect-video"></iframe>`;
-          } else if (element.type === "quote") {
-            return `<blockquote class="my-4 italic">${element.content || ''}</blockquote>`;
-          } else if (element.type === "link") {
-            return `<a href="${element.href || ''}" class="text-blue-500 hover:text-blue-700 underline">${element.text || ''}</a>`;
-          }
-        }).join('')}
-      </main>`;
-
-      scrollDownPreview()
-  }
-  
-  function renderHeader(){
-    const renderHeader = document.getElementById('renderHeader')
-    renderHeader.innerHTML = `
-    <header class="lg:p-8 lg:pb-0 p-4 m-auto max-w-screen-lg bg-white lg:rounded-tl-xl lg:rounded-tr-xl pb-0">
-        <div class="relative">
-          <img src="${post.metadata.cover || ''}" alt="${post.metadata.title || ''}" class="w-full aspect-video object-cover rounded-xl">
-
-          <!-- Categorias -->
-          <div class="absolute top-3 left-2 flex space-x-4">
-            ${post.metadata.categories ? post.metadata.categories.map(category => `<span class="bg-red-700 px-4 md:px-6 py-1 md:py-2  font-semibold  text-white rounded-full text-center lg:text-lg text-sm">${category}</span>`).join('') : ''}
-          </div>
-        </div>
-
-        <section class="flex justify-start items-center p-4 space-x-4">
-          <!-- Data de publicação -->
-          <div class="flex items-center space-x-2">
-            <div class="text-red-700">
-              <i class="fa-solid fa-calendar-days"></i>
-            </div>
-          
-            ${post.metadata.publicationDate !== null ? `<p class="font-semibold">${post.metadata.publicationDate}</p>` : ''}
-          </div>
-
-          <!-- Visualizações -->
-          <div class="flex items-center space-x-2">
-            <div class="text-red-700">
-              <i class="fa-solid fa-fire"></i>
-            </div>
-            <p class="text-gray-700 font-semibold">${post.metadata.views || ''}</p>
-          </div>
-        </section>
-
-        <h1 class="lg:text-4xl text-xl  font-semibold ">${post.metadata.title || ''}</h1>
-      </header>
-    
+        <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-20 p-4" placeholder="content${contId}"></textarea>
+      </div>
     `
   }
 
-  function newH2(){
-
-    post.content.push({
-      type: 'caption',
-      content: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
+  function removeContent(id){
+    document.querySelector('#'+id).remove()
   }
   
-  function newA(){
-    post.content.push({
-      type: 'link',
-      href: document.getElementById('inputPostLink').value,
-      text: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
-  }
-  
-  function newP(){
-    post.content.push( {
-      type: 'paragraph',
-      content: document.getElementById('inputPostText').value
-    })
-    clearControlInput()
-  }
-  
-  function newQuote(){
-    post.content.push({
-      type: 'quote',
-      content: document.getElementById('inputPostText').value,
-    })
-    clearControlInput()
-  }
-  
-  function newUl(){
-      
-
-    post.content.push(    {
-      type: 'list',
-      style: 'ordered', // or 'unordered'
-      items: stringToArray(document.getElementById('inputPostText').value) //['Item 1', 'Item 2', 'Item 3']
-    })
-    clearControlInput()
-  }
-  
-  function newImg(){
-    post.content.push({
-      type: 'image',
-      src: document.getElementById('inputPostText').value,
-      alt: 'Imagem ilustrativa',
-    })
-    clearControlInput()
-  }
-  
-  function newIframe(){
-    post.content.push({
-      type: 'video',
-      src: document.getElementById('inputPostText').value,
-    })
-    clearControlInput()
-  }
-
-  function publish() {
-    fetch('/post/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-    })
-    .then((response) => {
-      alert('Solicitação publicada com sucesso!');
-      console.log('Solicitação publicada com sucesso!', response);
-    })
-    .catch((error) => {
-      alert('Erro ao publicar, veja os logs');
-      console.error('Erro ao publicar:', error);
-    });
-  }
 
 </script>
-
