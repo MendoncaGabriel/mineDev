@@ -5,20 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EDITAR POST</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- font-awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-900">
   <main class="bg-gray-400 max-w-screen-lg p-8 m-auto space-y-8">
 
-    <section>
-      <h2>POSTAGENS</h2>
+    <a class="text-blue-700 hover:text-white font-semibold" href="/post/novo">NOVO POST</a>
+    <a class="text-blue-700 hover:text-white font-semibold ml-5" href="/">HOME</a>
 
-      <select class=" px-4 py-2 " id="pageSelect">
+    <section>
+      <h2 class="font-semibold text-lg ">POSTAGENS</h2>
+
+      <select class=" px-4 py-2 w-full" id="pageSelect">
         <% for (let i = 0; i < data.length; i++) { %>
           <option value="<%= data[i]._id %>"><%= data[i].metadata.title %></option>
         <% } %>
       </select>
 
       <button onclick="loadDataPage()" class="px-4 py-2 bg-green-700 font-semibold text-white">CARREGAR</button>
+      <button onclick="deletePage()" class="px-4 py-2 bg-red-700 font-semibold text-white">APAGAR</button>
     </section>
   
     <header class="space-y-4">
@@ -82,62 +88,117 @@
 
 
 <script>
-function getData(){
-  const data = {
-    // HEADER
-    metadata:{
-      title: document.getElementById('titleHeader').value,
-      cover: document.getElementById('coverHeader').value,
-      description: document.getElementById('descriptionHeader').value,
-      author: document.getElementById('authorHeader').value,
-      categories: document.getElementById('categoriesHeader').value.split(';;'),
-      keywords: document.getElementById('keywordsHeader').value.split(';;')
-    },
-    content:[]
+  function deletePage(id){
+    const pageID = document.getElementById('pageSelect').value
+    const pass = prompt('APAGAR ESTA PAGINA?, DIGITE SUA SENHA.')
+    if(pass == '22052719' && pageID){
+      fetch('/post/'+pageID,{
+        method: 'DELETE',
+      })
+      .then((res)=>{
+        console.log(res)
+        alert('APAGADO COM SUCESSO')
+        window.location.reload()
+      })
+      .catch((err)=>{
+        console.log(err)
+        alert('ERRO AO APAGRA PAGINA!')
+      })
+    }else{
+      alert('SENHA ERRADA!')
+    }
   }
 
-  // CONTENT
-  const itemContent = document.querySelectorAll('.itemContent')
-  itemContent.forEach((e)=>{
-    const typeElement = e.querySelector('h2');
-    const contentElement = e.querySelector('textarea');
+  function obterDataAtual() {
+    function padZero(numero) {
+    return numero < 10 ? `0${numero}` : numero;
+    }
+    const dataAtual = new Date();
+      
+      // Extrair dia, mês e ano da data
+      const dia = padZero(dataAtual.getDate());
+      const mes = padZero(dataAtual.getMonth() + 1); // Mês começa do zero, então somamos 1
+      const ano = dataAtual.getFullYear();
+    // Retornar os valores em um objeto
+    return `${dia}/${mes}/${ano}`
+  }
 
-    const content = {
-      type: typeElement.textContent.trim(), // Corrigido aqui
-      content: contentElement.value.trim().includes(';;') ? contentElement.value.split(';;') : contentElement.value
+  function getData(){
+    const data = {
+      // HEADER
+      metadata:{
+        title: document.getElementById('titleHeader').value,
+        cover: document.getElementById('coverHeader').value,
+        description: document.getElementById('descriptionHeader').value,
+        author: document.getElementById('authorHeader').value,
+        categories: document.getElementById('categoriesHeader').value.split(';;'),
+        keywords: document.getElementById('keywordsHeader').value.split(';;'),
+        publicationDate: obterDataAtual()
+      },
+      content:[]
     }
 
-    data.content.push(content);
+    // CONTENT
+    const itemContent = document.querySelectorAll('.itemContent')
+    itemContent.forEach((e)=>{
+      const typeElement = e.querySelector('h2');
+      const contentElement = e.querySelector('textarea');
 
-  })
-  return data
-}
+      const content = {
+        type: typeElement.textContent.trim(), // Corrigido aqui
+        content: contentElement.value.trim().includes(';;') ? contentElement.value.split(';;') : contentElement.value
+      }
+
+      data.content.push(content);
+
+    })
+    return data
+  }
 
 
 
   //adicionar nova caixa de conteudo
   let contId = 0;
+  function newContent(type, content) {
+    contId++;
+    const contentSection = document.querySelector('#contentSection');
+    const newContentDiv = document.createElement('div');
 
-function newContent(type, content) {
-  contId++;
-  const contentSection = document.querySelector('#contentSection');
-  const newContentDiv = document.createElement('div');
-
-  newContentDiv.id = 'content' + contId;
-  newContentDiv.setAttribute('name', type);
-  newContentDiv.innerHTML = `
+    newContentDiv.id = 'content' + contId;
+    newContentDiv.setAttribute('name', type);
+    newContentDiv.innerHTML = `
     <div class="itemContent">
-      <div class="flex justify-between pb-2">
-        <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
-        <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+
+
+<div class="flex justify-between pb-2">
+  <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
+
+
+
+  <div>      
+    <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+    <button onclick="moverPraCima('content${contId}')">
+      <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+        <i class="fa-solid fa-up-long"></i>
       </div>
-      <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-20 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">${content}</textarea>
-    </div>
-  `;
+    </button>
+    <button onclick="moverPraBaixo('content${contId}')">
+      <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+        <i class="fa-solid fa-down-long"></i>
+      </div>
+    </button>
+    
+    
+  </div>
+</div>
+<textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">
+  ${typeof content !== 'undefined' && 'undefined' ? content : ''}
+</textarea>
+</div>
+    `;
 
-  contentSection.appendChild(newContentDiv);
-}
-
+    contentSection.appendChild(newContentDiv);
+  }
 
   function removeContent(id){
     document.querySelector('#'+id).remove()
@@ -200,17 +261,55 @@ function newContent(type, content) {
   
     // CONTENT
     data.content.forEach((e) => {
-  if (typeof e.content === 'string') {
-    const contentWithDoubleSemicolon = e.content.replace(/,/g, ';;');
-    newContent(e.type, contentWithDoubleSemicolon);
-  } else {
-    newContent(e.type, e.content);
-  }
+    if (e.type === 'ul' || e.type === 'a') {
+        if (typeof e.content === 'string') {
+            const contentWithDoubleSemicolon = e.content;
+            const text = contentWithDoubleSemicolon.replace(/,/g, ';;');
+            newContent(e.type, text);
+        } else {
+            console.error('O conteúdo não é uma string:', e.content);
+        }
+    } else {
+        newContent(e.type, e.content);
+    }
+});
+
 });
 
 
  
   }
   
+
+</script>
+
+<script>
+  function moverPraCima(contentId) {
+    const contentDiv = document.getElementById(contentId);
+
+    if (contentDiv) {
+      const contentSection = document.querySelector('#contentSection');
+      const index = Array.from(contentSection.children).indexOf(contentDiv);
+
+      if (index > 0) {
+        contentSection.insertBefore(contentDiv, contentSection.children[index - 1]);
+      }
+    }
+  }
+
+  function moverPraBaixo(contentId) {
+  const contentDiv = document.getElementById(contentId);
+
+  if (contentDiv) {
+    const contentSection = document.querySelector('#contentSection');
+    const index = Array.from(contentSection.children).indexOf(contentDiv);
+
+    if (index < contentSection.children.length - 1) {
+      contentSection.insertBefore(contentDiv, contentSection.children[index + 2]);
+    }
+  }
+}
+
+
 
 </script>
