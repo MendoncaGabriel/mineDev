@@ -64,36 +64,36 @@
 
     <% data.content.forEach(element => { %>
       <!-- Subtítulo -->
-      <% if(element.type === "caption"){ %>
+      <% if(element.type === "h2"){ %>
         <h2 class="my-2 lg:text-xl text-lg font-semibold"><%= element.content %></h2> 
 
       <!-- Parágrafo -->
-      <% } else if(element.type === "paragraph"){ %>
+      <% } else if(element.type === "p"){ %>
         <p class="my-2 "><%= element.content %></p>  
 
       <!-- Imagem -->
-      <% } else if(element.type === "image"){ %>
-        <img src="<%= element.src %>" alt="<%= element.alt %>" class="lg:w-auto max-w-[640px] w-full m-auto aspect-video "> 
+      <% } else if(element.type === "img"){ %>
+        <img src="<%= element.content %>" alt="imagem ilistrativa" class="lg:w-auto max-w-[640px] w-full m-auto aspect-video "> 
 
       <!-- Lista -->
-      <% } else if(element.type === "list"){ %>
+      <% } else if(element.type === "ul"){ %>
         <ul class="list-disc p-2"> 
-          <% element.items.forEach(item => { %>
+          <% element.content.forEach(item => { %>
             <li><%= item %></li>
           <% }) %>
         </ul> 
         
       <!-- Vídeo -->
-      <% } else if(element.type === "video"){ %>
-        <iframe src="<%= element.src %>" frameborder="0" allowfullscreen class="m-auto w-full my-2 max-w-[640px] aspect-video"></iframe> 
+      <% } else if(element.type === "iframe"){ %>
+        <iframe src="<%= element.content %>" frameborder="0" allowfullscreen class="m-auto w-full my-2 max-w-[640px] aspect-video"></iframe> 
 
       <!-- Citação -->
-      <% } else if(element.type === "quote"){ %>
+      <% } else if(element.type === "blockquote"){ %>
         <blockquote class="my-4 italic"><%= element.content %></blockquote> 
 
       <!-- Link -->
-      <% } else if(element.type === "link") { %>
-        <a href="<%= element.href %>" class="text-blue-500 hover:text-blue-700 underline"><%= element.text %></a> 
+      <% } else if(element.type === "a") { %>
+        <a href="<%= element.content[0] %>" class="text-blue-500 hover:text-blue-700 underline"><%= element.content[1] %></a> 
       <% } %>
       
     <% }) %>

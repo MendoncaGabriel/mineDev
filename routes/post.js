@@ -10,19 +10,25 @@ router.get('/novo', async (req, res) => {
 });
   
 
-router.get('/edit/:title', async (req, res) => {
+
+  
+router.get('/editar', async (req, res) => {
   try {
-    const title = req.params.title;
-    const urlTitle = title.replace(/-/g, ' ');
 
-    const data = await postSchema.findOne({'metadata.title': urlTitle});
-
-    if (!data) {
-      res.status(404).json({ msg: 'Post não encontrado' });
-      return;
-    }
-
-    res.status(200).json(data);
+    const data = await postSchema.find({}, 'metadata.title _id');
+      res.render('editPost', {data: data})
+  } catch (err) {
+    res.status(500).json({ msg: 'Erro na consulta do post: ' + err.message });
+  }
+});
+  
+router.get('/:id', async (req, res) => {
+  try {
+    console.log('buscando')
+    const id = req.params.id
+    const data = await postSchema.findById(id);
+    console.log(data)
+    res.status(200).json(data)
   } catch (err) {
     res.status(500).json({ msg: 'Erro na consulta do post: ' + err.message });
   }
@@ -31,8 +37,27 @@ router.get('/edit/:title', async (req, res) => {
   
 
 //PUBLICAR POST
+router.patch('/:id', (req, res) => {
+  const id = req.params.id
+  const newData = req.body
+  postSchema.findByIdAndUpdate(id, newData)
+
+
+  .then((doc) => {
+    res.status(201).json(doc);
+    console.log('Post atualizado com sucesso!');
+  })
+  .catch((err) => {
+    res.status(500).json({ erro: err });
+    console.log('Erro ao atualizar post!:', err);
+  });
+});
 router.post('/new', (req, res) => {
   const newPost = new postSchema(req.body);
+
+  console.log('#############################')
+  console.log(req.body)
+  console.log('#############################')
   newPost.save()
   .then((doc) => {
     res.status(201).json(doc);

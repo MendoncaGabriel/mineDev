@@ -3,11 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOVO POST</title>
+  <title>EDITAR POST</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900">
   <main class="bg-gray-400 max-w-screen-lg p-8 m-auto space-y-8">
+
+    <section>
+      <h2>POSTAGENS</h2>
+
+      <select class=" px-4 py-2 " id="pageSelect">
+        <% for (let i = 0; i < data.length; i++) { %>
+          <option value="<%= data[i]._id %>"><%= data[i].metadata.title %></option>
+        <% } %>
+      </select>
+
+      <button onclick="loadDataPage()" class="px-4 py-2 bg-green-700 font-semibold text-white">CARREGAR</button>
+    </section>
+  
     <header class="space-y-4">
       <h2 class="text-lg font-semibold">CABEÇALHO</h2>
 
@@ -62,7 +75,7 @@
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
       </div>
     </section>
-    <button onclick="publish()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 w-full">PUBLICAR POST</button>
+    <button onclick="update()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 w-full">ATUALIZAR POST</button>
   </main>
 </body>
 </html>
@@ -103,35 +116,38 @@ function getData(){
 
 
   //adicionar nova caixa de conteudo
-  let contId = 0
-  function newContent(type) {
-    contId++;
-    const contentSection = document.querySelector('#contentSection');
-    const newContentDiv = document.createElement('div');
+  let contId = 0;
 
-    newContentDiv.id = 'content' + contId;
-    newContentDiv.setAttribute('name', type);
-    newContentDiv.innerHTML = `
-    <div class = "itemContent">
+function newContent(type, content) {
+  contId++;
+  const contentSection = document.querySelector('#contentSection');
+  const newContentDiv = document.createElement('div');
+
+  newContentDiv.id = 'content' + contId;
+  newContentDiv.setAttribute('name', type);
+  newContentDiv.innerHTML = `
+    <div class="itemContent">
       <div class="flex justify-between pb-2">
         <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
         <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
       </div>
-      <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-20 p-4" placeholder="${type == 'h2' ? 'subtitulo...'  :  type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!' }"></textarea>
+      <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-20 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">${content}</textarea>
     </div>
-    `;
+  `;
 
-    contentSection.appendChild(newContentDiv);
-  }
+  contentSection.appendChild(newContentDiv);
+}
+
 
   function removeContent(id){
     document.querySelector('#'+id).remove()
   }
 
-  async function publish(){
+  async function update(){
+    const pageSelect = document.getElementById('pageSelect').value
     const data = await getData()
-    fetch('/post/new',{
-      method: 'POST',
+    fetch('/post/'+pageSelect,{
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -139,12 +155,61 @@ function getData(){
     })
     .then((res)=>{
       console.log(res)
-      alert('POST PUBLICADO COM SUCESSO!')
+      alert('POST ATUALIZADO COM SUCESSO!')
     })
     .catch((err)=>{
       console.log(err)
-      alert('ERRO AO PUBLICAR POST!')
+      alert('ERRO AO ATUALIZADO POST!')
     })
+  }
+
+
+  //carregar dados da pagina
+  function loadDataPage(){
+    const pageSelect = document.getElementById('pageSelect').value
+    console.log('/post/'+pageSelect)
+    fetch('/post/'+pageSelect,{
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then((res)=>{
+      console.log(res)
+      writeDataInPage(res)
+  
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+
+
+  function writeDataInPage(data){
+    // HEADER
+    document.getElementById('titleHeader').value = data.metadata.title
+    document.getElementById('coverHeader').value = data.metadata.cover
+    document.getElementById('descriptionHeader').value = data.metadata.description
+    document.getElementById('authorHeader').value = data.metadata.author
+
+    let categoriesHeader = data.metadata.categories.map(category => category.replace(/,/g, ';;')).join(';;');
+    let keywordsHeader = data.metadata.keywords.map(keyword => keyword.replace(/,/g, ';;')).join(';;');
+
+    document.getElementById('categoriesHeader').value = categoriesHeader;
+    document.getElementById('keywordsHeader').value = keywordsHeader;
+
+  
+    // CONTENT
+    data.content.forEach((e) => {
+  if (typeof e.content === 'string') {
+    const contentWithDoubleSemicolon = e.content.replace(/,/g, ';;');
+    newContent(e.type, contentWithDoubleSemicolon);
+  } else {
+    newContent(e.type, e.content);
+  }
+});
+
+
+ 
   }
   
 
