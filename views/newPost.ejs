@@ -55,7 +55,7 @@
       <h2 class="text-lg font-semibold">CONTEUDO</h2>
 
       <!-- CONTEUDO -->
-      <section id="contentSection" class="border border-black p-4"></section>
+      <section id="contentSection" class="border border-black p-4 duration-300"></section>
 
       <!-- CONTROLES -->
       <div class="border p-4">
@@ -67,7 +67,17 @@
         <button onclick="newContent('blockquote')" class="px-4 py-1 bg-gray-600 text-white font-semibold">blockquote</button>
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
       </div>
+
+
+
+      
     </section>
+
+
+
+
+
+
     <button onclick="publish()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 w-full">PUBLICAR POST</button>
   </main>
 </body>
@@ -146,15 +156,23 @@ function newContent(type) {
 
 
         <div>      
-          <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
-          <button onclick="moverPraCima('content${contId}')">
+          <button title="REMOVER" onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+
+          <button title="ADICIONAR ACIMA" onclick="moverPraCima('content${contId}')">
             <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
               <i class="fa-solid fa-up-long"></i>
             </div>
           </button>
-          <button onclick="moverPraBaixo('content${contId}')">
+
+          <button title="MOVER ABAIXO" onclick="moverPraBaixo('content${contId}')">
             <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
               <i class="fa-solid fa-down-long"></i>
+            </div>
+          </button>
+
+          <button title="ADICIONAR ABAIXO" onclick="addAbaixo('content${contId}')">
+            <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+              <i class="fa-solid fa-plus"></i>
             </div>
           </button>
           
@@ -209,18 +227,65 @@ function newContent(type) {
   }
 
   function moverPraBaixo(contentId) {
-  const contentDiv = document.getElementById(contentId);
+    const contentDiv = document.getElementById(contentId);
 
-  if (contentDiv) {
-    const contentSection = document.querySelector('#contentSection');
-    const index = Array.from(contentSection.children).indexOf(contentDiv);
+    if (contentDiv) {
+      const contentSection = document.querySelector('#contentSection');
+      const index = Array.from(contentSection.children).indexOf(contentDiv);
 
-    if (index < contentSection.children.length - 1) {
-      contentSection.insertBefore(contentDiv, contentSection.children[index + 2]);
+      if (index < contentSection.children.length - 1) {
+        contentSection.insertBefore(contentDiv, contentSection.children[index + 2]);
+      }
     }
   }
+
+
+  let currentButtonType = 'h2'; // Tipo padrão inicial
+
+function setButtonType(type) {
+  currentButtonType = type;
+}
+
+function newContent() {
+  contId++;
+  const contentSection = document.querySelector('#contentSection');
+  const newContentDiv = document.createElement('div');
+
+  newContentDiv.id = 'content' + contId;
+  newContentDiv.setAttribute('name', currentButtonType);
+
+  newContentDiv.innerHTML = `
+    <div class="itemContent">
+      <div class="flex justify-between pb-2">
+        <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${currentButtonType}</h2>
+        <div>      
+          <button title="REMOVER" onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+          <button title="ADICIONAR ACIMA" onclick="moverPraCima('content${contId}')">
+            <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+              <i class="fa-solid fa-up-long"></i>
+            </div>
+          </button>
+          <button title="MOVER ABAIXO" onclick="moverPraBaixo('content${contId}')">
+            <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+              <i class="fa-solid fa-down-long"></i>
+            </div>
+          </button>
+          <button title="ADICIONAR ABAIXO" onclick="addAbaixo('content${contId}')">
+            <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
+              <i class="fa-solid fa-plus"></i>
+            </div>
+          </button>
+        </div>
+      </div>
+      <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${currentButtonType == 'h2' ? 'subtitulo...' : currentButtonType == 'p' ? 'paragrafo' : currentButtonType == 'img' ? 'link de imagem' : currentButtonType == 'ul' ? 'item 1;; item 2;; item 3' : currentButtonType == 'iframe' ? 'link de iframe' : currentButtonType == 'blockquote' ? 'citação...' : currentButtonType == 'a' ? 'link;; texto' : 'não identificado!'}"></textarea>
+    </div>
+  `;
+
+  contentSection.appendChild(newContentDiv);
 }
 
 
-
 </script>
+
+
+

@@ -262,19 +262,25 @@
     // CONTENT
     data.content.forEach((e) => {
     if (e.type === 'ul' || e.type === 'a') {
-        if (typeof e.content === 'string') {
-            const contentWithDoubleSemicolon = e.content;
-            const text = contentWithDoubleSemicolon.replace(/,/g, ';;');
+        if (Array.isArray(e.content)) {
+            // Aqui, e.content é um array
+            const contentWithDoubleSemicolon = e.content.join(';;');
+            newContent(e.type, contentWithDoubleSemicolon);
+        } else if (typeof e.content === 'string') {
+            // Aqui, e.content é uma string
+            const text = e.content.replace(/,/g, ';;');
             newContent(e.type, text);
         } else {
-            console.error('O conteúdo não é uma string:', e.content);
+            console.error('O conteúdo não é uma string ou um array:', e.content);
         }
     } else {
+        // Aqui, e.content é uma string
         newContent(e.type, e.content);
     }
 });
 
-});
+
+
 
 
  
