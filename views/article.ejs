@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +13,8 @@
 </head>
 
 <body class="bg-gray-200 text-gray-700  leading-relaxed ">
-
   <!-- NAVBAR -->
   <%- include('../components/navbar/navbar.ejs') %>
-
 
   <header class="lg:p-8 lg:pb-0 p-4 m-auto max-w-screen-lg bg-white lg:rounded-tl-xl lg:rounded-tr-xl pb-0">
     <div class="relative">
@@ -26,13 +23,12 @@
       <!-- Categorias -->
       <div class="absolute top-3 left-2 flex space-x-4">
         <% data.metadata.categories.forEach(category => { %>
-        <span class="bg-red-700 px-4 md:px-6 py-1 md:py-2  font-semibold  text-white rounded-full text-center lg:text-lg text-sm"><%= category %></span>
+          <span class="bg-red-700 px-4 md:px-6 py-1 md:py-2  font-semibold  text-white rounded-full text-center lg:text-lg text-sm"><%= category %></span>
         <% }) %>
       </div>
     </div>
 
     <section class="flex justify-between items-center" >
-
       <div class="flex justify-start items-center p-4 space-x-4">
         <!-- Data de publicação -->
         <div class="flex items-center space-x-2">
@@ -55,14 +51,12 @@
         <i class="fa-solid fa-user"></i>
         <h2 class="text-sm font-semibold text-gray-600"><%= data.metadata.author %></h2>
       </div>
-
     </section>
+    
     <h1 class="lg:text-4xl text-xl  font-semibold "><%= data.metadata.title %></h1>
   </header>
 
-
   <main class="lg:p-8 lg:pt-1 p-4 m-auto max-w-screen-lg bg-white   rounded-bl-xl rounded-br-xl pt-1">
-
     <% data.content.forEach(element => { %>
       <!-- Subtítulo -->
       <% if(element.type === "h2"){ %>
@@ -80,7 +74,9 @@
       <% } else if(element.type === "ul"){ %>
         <ul class="list-disc p-2"> 
           <% element.content.forEach(item => { %>
+   
             <li><%= item %></li>
+            
           <% }) %>
         </ul> 
         
@@ -96,33 +92,26 @@
       <% } else if(element.type === "a") { %>
         <a href="<%= element.content[0] %>" class="text-blue-500 hover:text-blue-700 underline"><%= element.content[1] %></a> 
       <% } %>
-      
     <% }) %>
 
 
     <!-- Palavras chaves -->
     <section class="mt-8">
-      <h2 class="text-center text-lg text-gray-600">Palavras relacionadas</h2>
-      <hr><br>
-
+      <h2 class="text-center text-lg text-gray-600">Palavras relacionadas</h2><hr><br>
       <div class="space-x-4   px-4">
         <% for( let i = 0; i < data.metadata.keywords.length; i++ ) { %>
-          <p class="px-2 py-1 bg-gray-600 text-gray-100 font-medium text-sm  inline-block my-2"><%= data.metadata.keywords[i]  %></p>
+          <% if (typeof data.metadata.keywords[i] !== 'undefined' && data.metadata.keywords[i]) { %>
+            <p class="px-2 py-1 bg-gray-600 text-gray-100 font-medium text-sm  inline-block my-2"><%= data.metadata.keywords[i]  %></p>
           <% } %>
-        </section>
+        <% } %>
       </div>
-
+    </section>
   </main>
-
-
-
 
   <!-- FOOTER -->
   <%- include('../components/footer/footer.ejs') %>
 
   <!-- BTN UP -->
   <%- include('../components/button/btnUp.ejs') %>
-
 </body>
-
 </html>

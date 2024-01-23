@@ -1,4 +1,4 @@
-<a href="/<%= data.metadata.title.replace(/ /g, '-')  %>" class="hover:scale-[102%] duration-300">
+<a href="/<%= data.metadata.url  %>" class="hover:scale-[102%] duration-300 ">
     <div class="overflow-hidden rounded-lg bg-white hover:shadow-xl duration-300 max-w-sm m-auto">
         <img src="<%= data.metadata.cover %>" alt="capa de artigo" class="h-72 w-full object-cover">
 
@@ -10,8 +10,8 @@
             <p class="font-semibold text-gray-600"><%= data.metadata.publicationDate %></p>
         </div>
 
-        <div class="px-4 min-h-20 flex items-center">
-            <h2 class="text-gray-600 text-xl font-semibold text-center "><%= data.metadata.title %></h2>
+        <div class="px-4 min-h-24 max-h-24 flex items-center   overflow-hidden">
+            <h2 class="text-gray-600 text-lg font-semibold text-center "><%= data.metadata.title %></h2>
         </div>
         
         <div class="p-4   mt-4 flex items-center justify-between bg-red-700">

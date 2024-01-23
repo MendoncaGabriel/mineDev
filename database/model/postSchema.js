@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema({
   metadata: {
+    url: String,
     title: String,
     cover: String,
     description: String,

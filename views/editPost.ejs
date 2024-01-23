@@ -11,25 +11,26 @@
 <body class="bg-gray-900">
   <main class="bg-gray-400 max-w-screen-lg p-8 m-auto space-y-8">
 
-    <a class="text-blue-700 hover:text-white font-semibold" href="/post/novo">NOVO POST</a>
-    <a class="text-blue-700 hover:text-white font-semibold ml-5" href="/">HOME</a>
-
-    <section>
-      <h2 class="font-semibold text-lg ">POSTAGENS</h2>
-
-      <select class=" px-4 py-2 w-full" id="pageSelect">
-        <% for (let i = 0; i < data.length; i++) { %>
-          <option value="<%= data[i]._id %>"><%= data[i].metadata.title %></option>
-        <% } %>
-      </select>
-
-      <button onclick="loadDataPage()" class="px-4 py-2 bg-green-700 font-semibold text-white">CARREGAR</button>
-      <button onclick="deletePage()" class="px-4 py-2 bg-red-700 font-semibold text-white">APAGAR</button>
-    </section>
-  
     <header class="space-y-4">
-      <h2 class="text-lg font-semibold">CABEÇALHO</h2>
+      <div class="border p-2 flex justify-between items-center">
+        <h2 class="text-lg font-semibold">CABEÇALHO</h2>
+        <div>
+          <button onclick="showFormHeader()" class="border p-4">show</button>
+          <button onclick="hiddenFormHeader()" class="border p-4">hidden</button>
+        </div>
+      </div>
+      <script>
+        function showFormHeader(){
+          const formHeader = document.getElementById('formHeader')
+          formHeader.style.height = '100%'
+        }
+        function hiddenFormHeader(){
+          const formHeader = document.getElementById('formHeader')
+          formHeader.style.height = '0px'
+        }
+      </script>
 
+    <section id="formHeader" class=" overflow-hidden h-0">
       <div class="flex flex-col">
         <label for="titleHeader">Titulo:</label>
         <input id="titleHeader" type="text" class="px-4 py-2 border bg-gray-200">
@@ -61,17 +62,59 @@
         <label for="">PALAVRAS CHAVE:</label>
         <input id="keywordsHeader" type="text" class="px-4 py-2 border bg-gray-200" placeholder="keyword 1;; keyword 2;; keyword 3">
       </div>
+    </section>
     </header>
     <hr class="border border-black">
 
     <section class="space-y-4 border">
-      <h2 class="text-lg font-semibold">CONTEUDO</h2>
-
+      <div class="p-4 flex justify-between border items-center">
+        <h2 class="text-lg font-semibold">CONTEUDO</h2>
+  
+        <div>
+          <button onclick="showFormContent()" class="border p-4">show</button>
+          <button onclick="hiddenFormContent()" class="border p-4">hidden</button>
+        </div>
+        <script>
+          function showFormContent(){
+            const formContent = document.getElementById('contentSection')
+            formContent.style.height = '100%'
+          }
+          function hiddenFormContent(){
+            const formContent = document.getElementById('contentSection')
+            formContent.style.height = '0px'
+          }
+        </script>
+      </div>
       <!-- CONTEUDO -->
-      <section id="contentSection" class="border border-black p-4"></section>
+      <section id="contentSection" class="border border-black overflow-hidden h-0"></section>
 
-      <!-- CONTROLES -->
-      <div class="border p-4">
+    </section>
+  </main>
+
+  <!-- CONTROLES -->
+  <div class="border px-4 py-2 fixed left-0 top-0 flex flex-col justify-between space-y-2 h-full max-w-64">
+    <div class="space-y-4">
+      <div>
+        <a class="text-blue-700 hover:text-white font-semibold" href="/post/novo">NOVO POST</a>
+        <a class="text-blue-700 hover:text-white font-semibold ml-5" href="/">HOME</a>
+      </div>
+
+        
+      <div>
+        <h2 class="font-semibold text-lg text-white">POSTAGENS</h2>
+
+        <select class=" px-4 py-2 w-full" id="pageSelect">
+          <% for (let i = 0; i < data.length; i++) { %>
+            <option value="<%= data[i]._id %>"><%= data[i].metadata.title %></option>
+          <% } %>
+        </select>
+
+        <button onclick="loadDataPage()" class="px-4 py-2 bg-green-700 font-semibold text-white">CARREGAR</button>
+        <button onclick="deletePage()" class="px-4 py-2 bg-red-700 font-semibold text-white">APAGAR</button>
+      </div>
+ 
+    
+      <div class="flex flex-col space-y-2">
         <button onclick="newContent('h2')" class="px-4 py-1 bg-gray-600 text-white font-semibold">h2</button>
         <button onclick="newContent('p')" class="px-4 py-1 bg-gray-600 text-white font-semibold">p</button>
         <button onclick="newContent('img')" class="px-4 py-1 bg-gray-600 text-white font-semibold">img</button>
@@ -80,14 +123,34 @@
         <button onclick="newContent('blockquote')" class="px-4 py-1 bg-gray-600 text-white font-semibold">blockquote</button>
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
       </div>
-    </section>
-    <button onclick="update()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 w-full">ATUALIZAR POST</button>
-  </main>
+    </div>
+  
+    <button onclick="update()" class=" bg-green-600 hover:bg-green-700 text-white px-4 py-2 w-full ">ATUALIZAR POST</button>
+  </div>
 </body>
 </html>
 
 
 <script>
+  function normalizeUrl(title) {
+  
+
+  // Remover acentos e caracteres especiais
+  const normalizedTitle = title
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  // Substituir espaços e caracteres especiais por hífens
+  const friendlyURL = normalizedTitle
+    .replace(/[^\w\s-]/g, "") // Remove caracteres especiais, exceto letras, números, espaços e hífens
+    .replace(/\s+/g, "-")     // Substitui espaços por hífens
+    .toLowerCase();
+
+  // Retorna a URL em vez de modificar diretamente o objeto
+  return friendlyURL;
+}
+  
+
   function deletePage(id){
     const pageID = document.getElementById('pageSelect').value
     const pass = prompt('APAGAR ESTA PAGINA?, DIGITE SUA SENHA.')
@@ -98,7 +161,7 @@
       .then((res)=>{
         console.log(res)
         alert('APAGADO COM SUCESSO')
-        window.location.reload()
+        location.reload();
       })
       .catch((err)=>{
         console.log(err)
@@ -127,6 +190,7 @@
     const data = {
       // HEADER
       metadata:{
+        url: normalizeUrl(document.getElementById('titleHeader').value),
         title: document.getElementById('titleHeader').value,
         cover: document.getElementById('coverHeader').value,
         description: document.getElementById('descriptionHeader').value,
@@ -145,15 +209,30 @@
       const contentElement = e.querySelector('textarea');
 
       const content = {
-        type: typeElement.textContent.trim(), // Corrigido aqui
-        content: contentElement.value.trim().includes(';;') ? contentElement.value.split(';;') : contentElement.value
-      }
+        type: typeElement.textContent.trim(),
+        content: contentElement.value.trim().includes(';;') ? contentElement.value.split(';;') : [contentElement.value]
+      };
 
       data.content.push(content);
 
     })
     return data
   }
+
+  function clearData(){
+    // limpar header
+    document.getElementById('titleHeader').value = "";
+    document.getElementById('titleHeader').value = "";
+    document.getElementById('coverHeader').value = "";
+    document.getElementById('descriptionHeader').value = "";
+    document.getElementById('authorHeader').value = "";
+    document.getElementById('categoriesHeader').value = "";
+    document.getElementById('keywordsHeader').value = "";
+
+    //limpar content
+    document.querySelector('#contentSection').innerHTML = ''
+  }
+  
 
 
 
@@ -176,7 +255,7 @@
 
 
   <div>      
-    <button onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+    <button onclick="removeContent('content${contId}')" class="px-4 h-10 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
     <button onclick="moverPraCima('content${contId}')">
       <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
         <i class="fa-solid fa-up-long"></i>
@@ -227,14 +306,15 @@
 
   //carregar dados da pagina
   function loadDataPage(){
+    clearData()
     const pageSelect = document.getElementById('pageSelect').value
-    console.log('/post/'+pageSelect)
     fetch('/post/'+pageSelect,{
       method: 'GET',
     })
     .then(res => res.json())
     .then((res)=>{
       console.log(res)
+      
       writeDataInPage(res)
   
     })

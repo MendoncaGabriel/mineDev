@@ -150,11 +150,9 @@ router.get('/', function(req, res) {
 
 //ARTIGO
 router.get('/:article', (req, res) => {
-  const article = req.params.article;
-  const articleName = article.replace(/-/g, ' ');
-
-
-  postSchema.findOne({ 'metadata.title': articleName })
+  const articleName = req.params.article;
+  
+  postSchema.findOne({ 'metadata.url': articleName })
   .then((doc) => {
     if (doc) {
       res.render('article', { data: doc, dateNow: dateNow() });
