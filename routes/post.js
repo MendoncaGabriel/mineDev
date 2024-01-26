@@ -1,35 +1,14 @@
 var express = require('express');
 var router = express.Router();
-const dateNow = require('../services/dateNow.js')
+
 const postSchema = require('../database/model/postSchema.js')
 
 
 // Autenticação
 require('dotenv').config()
 
-const checkToken = require('../services/checkToken.js')
 
-//PAGINA: CRIAR POST
-router.get('/novo', async (req, res) => {
-  const token = await checkToken(req.cookies.token)
-  if(token){
-    return res.render('newPost', {dateNow: dateNow()});
-  }else{
-    return res.render('loginAdm');
-  }
 
-});
-  
-
-//PAGINA DE EDITAR 
-router.get('/editar', async (req, res) => {
-  try {
-    const data = await postSchema.find({}, 'metadata.title _id');
-      res.render('editPost', {data: data})
-  } catch (err) {
-    res.status(500).json({ msg: 'Erro na consulta do post: ' + err.message });
-  }
-});
  
 //PUXAR DADOS DO POST
 router.get('/:id', async (req, res) => {

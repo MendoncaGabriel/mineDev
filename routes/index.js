@@ -123,6 +123,9 @@ const dataHome = {
   ]
 }
 
+const checkToken = require('../services/checkToken.js')
+
+
 //HOME
 router.get('/', function(req, res) {
 
@@ -146,7 +149,15 @@ router.get('/', function(req, res) {
 
 });
 
+router.get('/admin', async (req, res) => {
+  const token = await checkToken(req.cookies.token)
 
+  if(token){
+      return  res.render('admin')
+  }else{
+      return res.render('loginAdm');
+  }
+})
 
 //ARTIGO
 router.get('/:article', (req, res) => {

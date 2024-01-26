@@ -5,6 +5,12 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const adminSchema = require('../database/model/userAdmin.js')
+const dateNow = require('../services/dateNow.js')
+const checkToken = require('../services/checkToken.js')
+const postSchema = require('../database/model/postSchema.js')
+
+
+
 
 
 router.post('/login', async (req, res)=>{
@@ -46,6 +52,35 @@ router.post('/login', async (req, res)=>{
     }
 
 })
+
+
+//PAGINA: CRIAR POST
+router.get('/novo', async (req, res) => {
+    const token = await checkToken(req.cookies.token)
+    if(token){
+      return res.render('newPost', {dateNow: dateNow()});
+    }else{
+      return res.render('loginAdm');
+    }
+  
+});
+    
+  
+//PAGINA DE EDITAR 
+router.get('/editar', async (req, res) => {
+const token = await checkToken(req.cookies.token)
+
+    if(token){
+        const data = await postSchema.find({}, 'metadata.title _id');
+        return  res.render('editPost', {data: data})
+    }else{
+        return res.render('loginAdm');
+    }
+
+});
+
+
+
 
 // router.post('/newUserAdmin', async (req, res)=>{
 //     const {user, pass} = req.body
