@@ -10,8 +10,14 @@ require('dotenv').config()
 const checkToken = require('../services/checkToken.js')
 
 //PAGINA: CRIAR POST
-router.get('/novo', checkToken, async (req, res) => {
-  res.render('newPost', {dateNow: dateNow()});
+router.get('/novo', async (req, res) => {
+  const token = await checkToken(req.cookies.token)
+  if(token){
+    return res.render('newPost', {dateNow: dateNow()});
+  }else{
+    return res.render('loginAdm');
+  }
+
 });
   
 

@@ -23,29 +23,28 @@ router.post('/login', async (req, res)=>{
 		return res.status(422).json({msg: 'Senha invalida'})
 	}
 
-    try{
-		const secret = process.env.SECRET
-		const token = jwt.sign(
-			{
-				pass: userAdmin.pass
-			}, secret
-		)
+        try{
+            const secret = process.env.SECRET
+            const token = jwt.sign(
+                {
+                    pass: userAdmin.pass
+                }, secret
+            )
 
-	    res.status(200).json({msg: 'Autenticação realizada com sucesso!', token})
+            return res.status(200).json({msg: 'Autenticação realizada com sucesso!', token})
 
-	
-		
-	}catch(erro){
-		console.log(erro)
-		res.status(500).json({msg: 'Aconteceu um erro no servidor, tente novamente mais tarde!'})
-	}
+        
+            
+        }catch(erro){
+            console.log(erro)
+            return res.status(500).json({msg: 'Aconteceu um erro no servidor, tente novamente mais tarde!'})
+        }
         
 
     }else{
        return  res.status(200).json({msg:'usuario adm não encontrado!'})
     }
 
-    res.status(200).json({msg:'ok', admin: userAdmin, })
 })
 
 // router.post('/newUserAdmin', async (req, res)=>{
