@@ -85,14 +85,31 @@
           }
         </script>
       </div>
+
       <!-- CONTEUDO -->
-      <section id="contentSection" class="border border-black overflow-hidden h-0"></section>
+      <style>
+        #contentSection {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .itemContent {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            cursor: grab;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+        </style>
+      <section id="contentSection" class="border border-black overflow-hidden h-auto"></section>
 
     </section>
   </main>
 
   <!-- CONTROLES -->
-  <div class="border px-4 py-2 fixed left-0 top-0 flex flex-col justify-between space-y-2 h-full max-w-64">
+  <div class="border px-4 py-2 fixed left-0 top-0 flex flex-col justify-between space-y-2 h-full max-w-96 min-w-96">
     <div class="space-y-4">
       <div>
         <a class="text-blue-700 hover:text-white font-semibold" href="/post/novo">NOVO POST</a>
@@ -124,7 +141,8 @@
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
       </div>
     </div>
-  
+
+    <div class="border p-2 border-red-500" id="newContent"> </div>
     <button onclick="update()" class=" bg-green-600 hover:bg-green-700 text-white px-4 py-2 w-full ">ATUALIZAR POST</button>
   </div>
 </body>
@@ -150,7 +168,6 @@
   return friendlyURL;
 }
   
-
   function deletePage(id){
     const pageID = document.getElementById('pageSelect').value
     const pass = prompt('APAGAR ESTA PAGINA?, DIGITE SUA SENHA.')
@@ -233,12 +250,10 @@
     document.querySelector('#contentSection').innerHTML = ''
   }
   
-
-
-
-  //adicionar nova caixa de conteudo
   let contId = 0;
-  function newContent(type, content) {
+
+  function loadContent(type, content) {
+
     contId++;
     const contentSection = document.querySelector('#contentSection');
     const newContentDiv = document.createElement('div');
@@ -246,34 +261,37 @@
     newContentDiv.id = 'content' + contId;
     newContentDiv.setAttribute('name', type);
     newContentDiv.innerHTML = `
-    <div class="itemContent">
-
-
-<div class="flex justify-between pb-2">
-  <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
-
-
-
-  <div>      
-    <button onclick="removeContent('content${contId}')" class="px-4 h-10 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
-    <button onclick="moverPraCima('content${contId}')">
-      <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
-        <i class="fa-solid fa-up-long"></i>
+      <div class="itemContent sortable-item" draggable="true" id="content${contId}">
+        <div class="flex justify-between pb-2">
+          <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
+          <button onclick="removeContent('content${contId}')" class="px-4 h-10 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+        </div>
+        <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">
+          ${typeof content !== 'undefined' && 'undefined' ? content : ''}
+        </textarea>
       </div>
-    </button>
-    <button onclick="moverPraBaixo('content${contId}')">
-      <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
-        <i class="fa-solid fa-down-long"></i>
+    `;
+    contentSection.appendChild(newContentDiv);
+  }
+
+  //carregar content na aba de edição
+  function newContent(type, content) {
+    contId++;
+    const contentSection = document.querySelector('#newContent');
+    const newContentDiv = document.createElement('div');
+
+    newContentDiv.id = 'content' + contId;
+    newContentDiv.setAttribute('name', type);
+    newContentDiv.innerHTML = `
+      <div class="itemContent sortable-item" draggable="true" id="content${contId}">
+        <div class="flex justify-between pb-2">
+          <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
+          <button onclick="removeContent('content${contId}')" class="px-4 h-10 py-1 bg-red-600 text-white font-semibold">APAGAR</button>
+        </div>
+        <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">
+          ${typeof content !== 'undefined' && 'undefined' ? content : ''}
+        </textarea>
       </div>
-    </button>
-    
-    
-  </div>
-</div>
-<textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}">
-  ${typeof content !== 'undefined' && 'undefined' ? content : ''}
-</textarea>
-</div>
     `;
 
     contentSection.appendChild(newContentDiv);
@@ -303,8 +321,6 @@
     })
   }
 
-
-  //carregar dados da pagina
   function loadDataPage(){
     clearData()
     const pageSelect = document.getElementById('pageSelect').value
@@ -323,8 +339,6 @@
     })
   }
 
-
-
   function writeDataInPage(data){
     // HEADER
     document.getElementById('titleHeader').value = data.metadata.title
@@ -342,60 +356,97 @@
     // CONTENT
     data.content.forEach((e) => {
     if (e.type === 'ul' || e.type === 'a') {
-        if (Array.isArray(e.content)) {
-            // Aqui, e.content é um array
-            const contentWithDoubleSemicolon = e.content.join(';;');
-            newContent(e.type, contentWithDoubleSemicolon);
-        } else if (typeof e.content === 'string') {
-            // Aqui, e.content é uma string
-            const text = e.content.replace(/,/g, ';;');
-            newContent(e.type, text);
-        } else {
-            console.error('O conteúdo não é uma string ou um array:', e.content);
-        }
-    } else {
+      if (Array.isArray(e.content)) {
+        // Aqui, e.content é um array
+        const contentWithDoubleSemicolon = e.content.join(';;');
+        loadContent(e.type, contentWithDoubleSemicolon);
+      } else if (typeof e.content === 'string') {
         // Aqui, e.content é uma string
-        newContent(e.type, e.content);
-    }
-});
-
-
-
-
-
- 
-  }
-  
-
-</script>
-
-<script>
-  function moverPraCima(contentId) {
-    const contentDiv = document.getElementById(contentId);
-
-    if (contentDiv) {
-      const contentSection = document.querySelector('#contentSection');
-      const index = Array.from(contentSection.children).indexOf(contentDiv);
-
-      if (index > 0) {
-        contentSection.insertBefore(contentDiv, contentSection.children[index - 1]);
+        const text = e.content.replace(/,/g, ';;');
+        loadContent(e.type, text);
+      } else {
+        console.error('O conteúdo não é uma string ou um array:', e.content);
       }
+    } else {
+      // Aqui, e.content é uma string
+      loadContent(e.type, e.content);
     }
-  }
-
-  function moverPraBaixo(contentId) {
-  const contentDiv = document.getElementById(contentId);
-
-  if (contentDiv) {
-    const contentSection = document.querySelector('#contentSection');
-    const index = Array.from(contentSection.children).indexOf(contentDiv);
-
-    if (index < contentSection.children.length - 1) {
-      contentSection.insertBefore(contentDiv, contentSection.children[index + 2]);
-    }
-  }
+  })
 }
 
+</script>
 
+
+
+
+
+
+<script>
+  //Drag Drop
+
+    let draggingElement = null;
+
+    document.addEventListener('dragstart', (e) => {
+        draggingElement = e.target;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', draggingElement.innerHTML);
+        draggingElement.classList.add('dragging');
+    });
+
+    document.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(e.clientY);
+        const draggedRect = draggingElement.getBoundingClientRect();
+
+        if (afterElement == null) {
+            document.getElementById('contentSection').appendChild(draggingElement);
+        } else {
+            const afterRect = afterElement.getBoundingClientRect();
+            const offset = e.clientY - afterRect.top;
+            if (offset > afterRect.height / 2) {
+                afterElement.parentNode.insertBefore(draggingElement, afterElement.nextSibling);
+            } else {
+                afterElement.parentNode.insertBefore(draggingElement, afterElement);
+            }
+        }
+    });
+
+    document.addEventListener('dragend', () => {
+        draggingElement.classList.remove('dragging');
+        draggingElement = null;
+    });
+
+    function getDragAfterElement(y) {
+      const draggableElements = [...document.querySelectorAll('.itemContent:not(.dragging)')];
+      return draggableElements.reduce((closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = Math.abs(y - box.top - box.height / 2);
+          if (offset < closest.offset) {
+              return { offset, element: child };
+          } else {
+              return closest;
+          }
+      }, { offset: Number.POSITIVE_INFINITY }).element;
+    }
+
+    function moverPraCima(elementId) {
+        const element = document.getElementById(elementId);
+        const previousElement = element.previousElementSibling;
+
+        if (previousElement) {
+            element.parentNode.insertBefore(element, previousElement);
+        }
+    }
+
+    function moverPraBaixo(elementId) {
+    const element = document.getElementById(elementId);
+    const nextElement = element.nextElementSibling;
+
+    if (nextElement) {
+        element.parentNode.insertBefore(nextElement, element);
+    }
+}
 
 </script>
+
+

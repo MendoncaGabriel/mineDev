@@ -89,6 +89,22 @@
       </div>
       <div id="formContent" class="space-y-4 border overflow-hidden">
         <!-- CONTEUDO -->
+        <style>
+          #contentSection {
+              display: flex;
+              flex-direction: column;
+          }
+  
+          .itemContent {
+              margin-bottom: 10px;
+              border: 1px solid #ccc;
+              cursor: grab;
+          }
+  
+          .dragging {
+              opacity: 0.5;
+          }
+          </style>
         <section id="contentSection" class="border border-black p-4 duration-300"></section>
 
       </div>
@@ -96,7 +112,7 @@
   </main>
 
 
-  <div class="border px-4 py-2 fixed left-0 top-0 flex flex-col justify-between space-y-2 h-full">
+  <div class="border px-4 py-2 fixed left-0 top-0 flex flex-col justify-between space-y-2 h-full min-w-96">
     <div class="space-y-4">
       <div>
         <a class="text-blue-700 hover:text-white font-semibold" href="/post/editar">EDITAR POST</a>
@@ -113,6 +129,11 @@
         <button onclick="newContent('blockquote')" class="px-4 py-1 bg-gray-600 text-white font-semibold">blockquote</button>
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
       </div>
+
+
+      
+    <div class="border p-2 border-red-500" id="newContent"> </div>
+
     </div>
     <button onclick="publish()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 w-full">PUBLICAR POST</button>
   </div>
@@ -121,7 +142,8 @@
 
 
 <script>
-    function normalizeUrl(title) {
+  let contId = 0;
+  function normalizeUrl(title) {
   
 
   // Remover acentos e caracteres especiais
@@ -139,7 +161,6 @@
   return friendlyURL;
 }
   
-
   function obterDataAtual() {
 
     function padZero(numero) {
@@ -192,42 +213,24 @@
     return data
   }
 
-  //adicionar nova caixa de conteudo
-  let contId = 0;
   function newContent(type) {
     contId++;
-    const contentSection = document.querySelector('#contentSection');
+    const contentSection = document.querySelector('#newContent');
     const newContentDiv = document.createElement('div');
 
     newContentDiv.id = 'content' + contId;
     newContentDiv.setAttribute('name', type);
 
     newContentDiv.innerHTML = `
-      <div class="itemContent">
+      <div class="itemContent sortable-item" draggable="true" id="content${contId}">
         <div class="flex justify-between pb-2">
           <h2 class="text-lg px-4 py-1 bg-gray-600 text-white font-semibold">${type}</h2>
-          <div>      
-            <button title="REMOVER" onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white h-10 font-semibold">APAGAR</button>
-
-            <button title="ADICIONAR ACIMA" onclick="moverPraCima('content${contId}')">
-              <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
-                <i class="fa-solid fa-up-long"></i>
-              </div>
-            </button>
-
-            <button title="MOVER ABAIXO" onclick="moverPraBaixo('content${contId}')">
-              <div class="w-10 h-10 bg-blue-500 hover:bg-blue-700 duration-200 flex items-center text-white justify-center">
-                <i class="fa-solid fa-down-long"></i>
-              </div>
-            </button>
-            
-
-          </div>
+          <button title="REMOVER" onclick="removeContent('content${contId}')" class="px-4 py-1 bg-red-600 text-white h-10 font-semibold">APAGAR</button>
         </div>
         <textarea name="" id="" cols="30" rows="1" class="border w-full min-h-20 max-h-34 p-4" placeholder="${type == 'h2' ? 'subtitulo...' : type == 'p' ? 'paragrafo' : type == 'img' ? 'link de imagem' : type == 'ul' ? 'item 1;; item 2;; item 3' : type == 'iframe' ? 'link de iframe' : type == 'blockquote' ? 'citação...' : type == 'a' ? 'link;; texto' : 'não identificado!'}"></textarea>
       </div>
     `;
-
+    contentSection.innerHTML = ''
     contentSection.appendChild(newContentDiv);
   }
 
@@ -254,44 +257,60 @@
     })
   }
   
-
-
-  function moverPraCima(contentId) {
-    const contentDiv = document.getElementById(contentId);
-
-    if (contentDiv) {
-      const contentSection = document.querySelector('#contentSection');
-      const index = Array.from(contentSection.children).indexOf(contentDiv);
-
-      if (index > 0) {
-        contentSection.insertBefore(contentDiv, contentSection.children[index - 1]);
-      }
-    }
-  }
-
-  function moverPraBaixo(contentId) {
-    const contentDiv = document.getElementById(contentId);
-
-    if (contentDiv) {
-      const contentSection = document.querySelector('#contentSection');
-      const index = Array.from(contentSection.children).indexOf(contentDiv);
-
-      if (index < contentSection.children.length - 1) {
-        contentSection.insertBefore(contentDiv, contentSection.children[index + 2]);
-      }
-    }
-  }
-
-
   let currentButtonType = ''; // Tipo padrão inicial
-
   function setButtonType(type) {
     currentButtonType = type;
   }
 
- 
 
 </script>
 
 
+<script>
+  //Drag Drop
+  let draggingElement = null;
 
+  document.addEventListener('dragstart', (e) => {
+      draggingElement = e.target;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', draggingElement.innerHTML);
+      draggingElement.classList.add('dragging');
+  });
+
+  document.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const afterElement = getDragAfterElement(e.clientY);
+      const draggedRect = draggingElement.getBoundingClientRect();
+
+      if (afterElement == null) {
+          document.getElementById('contentSection').appendChild(draggingElement);
+      } else {
+          const afterRect = afterElement.getBoundingClientRect();
+          const offset = e.clientY - afterRect.top;
+          if (offset > afterRect.height / 2) {
+              afterElement.parentNode.insertBefore(draggingElement, afterElement.nextSibling);
+          } else {
+              afterElement.parentNode.insertBefore(draggingElement, afterElement);
+          }
+      }
+  });
+
+  document.addEventListener('dragend', () => {
+      draggingElement.classList.remove('dragging');
+      draggingElement = null;
+  });
+
+  function getDragAfterElement(y) {
+        const draggableElements = [...document.querySelectorAll('.itemContent:not(.dragging)')];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = Math.abs(y - box.top - box.height / 2);
+            if (offset < closest.offset) {
+                return { offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.POSITIVE_INFINITY }).element;
+    }
+
+</script>
