@@ -4,8 +4,13 @@ const dateNow = require('../services/dateNow.js')
 const postSchema = require('../database/model/postSchema.js')
 
 
+// Autenticação
+require('dotenv').config()
+
+const checkToken = require('../services/checkToken.js')
+
 //PAGINA: CRIAR POST
-router.get('/novo', async (req, res) => {
+router.get('/novo', checkToken, async (req, res) => {
   res.render('newPost', {dateNow: dateNow()});
 });
   

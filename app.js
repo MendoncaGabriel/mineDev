@@ -8,6 +8,10 @@ require('./database/connect.js')
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let postRouter = require('./routes/post.js')
+let adminRouter = require('./routes/admin.js')
+
+
+
 
 let app = express();
 
@@ -15,10 +19,10 @@ let app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cookieParser());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 //Servir aquivos estaticos da pasta public
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,6 +34,7 @@ app.use('/components', express.static(path.join(__dirname, 'components')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/post', postRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

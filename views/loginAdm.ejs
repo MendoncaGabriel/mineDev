@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href='/stylesheets/output.css' />
+</head>
+<body class="h-screen relative bg-gray-200">
+
+    <section class="border flex flex-col p-4  min-w-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-500">
+        <h1 class="text-white text-lg font-semibold">ADMIN</h1>
+        <div>
+            <label for="" class="text-lg text-white">Login:</label><br>
+            <input id="loginAdmin" type="text" class="border px-4 py-2 bg-white w-full">
+        </div>
+
+        <div>
+            <label for="" class="text-lg text-white">Senha:</label><br>
+            <input id="passAdmin" type="text" class="border px-4 py-2 bg-white w-full">
+        </div>
+        <br>
+        <button  onclick="LoginAdmin()" class="px-4 py-2 bg-blue-500 text-white">Entrar</button>
+        
+    </section>
+</body>
+</html>
+<script>
+    function setCookie(name, value, daysToExpire) {
+        var expires = "";
+        if (daysToExpire) {
+            var date = new Date();
+            date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+    
+    async function LoginAdmin(){
+        const form = {
+            user: document.getElementById('loginAdmin').value,
+            pass: document.getElementById('passAdmin').value
+        }
+
+
+        fetch('/admin/login', {
+            method: 'POST',
+            headers:{ 'Content-Type': 'application/json' },
+            body: JSON.stringify(form)
+        })
+        .then(res => res.json())
+        .then((res)=>{
+            if(res.token){
+                setCookie('token', res.token, 30)
+                console.log('Token salvo em cookie!')
+                location.reload()
+            }
+        })
+        .catch((erro)=>{
+            console.log('Erro: ' + erro)
+        })
+    }
+</script>
