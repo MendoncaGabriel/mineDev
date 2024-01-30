@@ -140,6 +140,7 @@
         <button onclick="newContent('iframe')" class="px-4 py-1 bg-gray-600 text-white font-semibold">iframe</button>
         <button onclick="newContent('blockquote')" class="px-4 py-1 bg-gray-600 text-white font-semibold">blockquote</button>
         <button onclick="newContent('a')" class="px-4 py-1 bg-gray-600 text-white font-semibold">a</button>
+        <button onclick="newContent('code')" class="px-4 py-1 bg-gray-600 text-white font-semibold">code</button>
       </div>
     </div>
 
@@ -151,9 +152,10 @@
 
 
 <script>
+  var contId = 0;
+
   function normalizeUrl(title) {
   
-
   // Remover acentos e caracteres especiais
   const normalizedTitle = title
     .normalize("NFD")
@@ -251,7 +253,7 @@
     document.querySelector('#contentSection').innerHTML = ''
   }
   
-  let contId = 0;
+
 
   function loadContent(type, content) {
 
@@ -260,6 +262,7 @@
     const newContentDiv = document.createElement('div');
 
     newContentDiv.id = 'content' + contId;
+    console.log('content' + contId)
     newContentDiv.setAttribute('name', type);
     newContentDiv.innerHTML = `
       <div class="itemContent sortable-item" draggable="true" id="content${contId}">
@@ -282,6 +285,7 @@
     const newContentDiv = document.createElement('div');
 
     newContentDiv.id = 'content' + contId;
+    console.log('content' + contId)
     newContentDiv.setAttribute('name', type);
     newContentDiv.innerHTML = `
       <div class="itemContent sortable-item" draggable="true" id="content${contId}">
@@ -298,9 +302,18 @@
     contentSection.appendChild(newContentDiv);
   }
 
-  function removeContent(id){
-    document.querySelector('#'+id).remove()
+
+
+  function removeContent(id) {
+  const elementToRemove = document.querySelector(`#${id}`);
+  
+  if (elementToRemove) {
+    elementToRemove.remove();
+  } else {
+    console.error(`Element with ID '${id}' not found.`);
   }
+  }
+
 
   async function update(){
     const pageSelect = document.getElementById('pageSelect').value
@@ -375,79 +388,53 @@
   })
 }
 
-</script>
 
 
+//Drag Drop
+  let draggingElement = null;
 
+  document.addEventListener('dragstart', (e) => {
+    draggingElement = e.target;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', draggingElement.innerHTML);
+    draggingElement.classList.add('dragging');
+  });
 
+  document.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(e.clientY);
+    const draggedRect = draggingElement.getBoundingClientRect();
 
-
-<script>
-  //Drag Drop
-
-    let draggingElement = null;
-
-    document.addEventListener('dragstart', (e) => {
-        draggingElement = e.target;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', draggingElement.innerHTML);
-        draggingElement.classList.add('dragging');
-    });
-
-    document.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        const afterElement = getDragAfterElement(e.clientY);
-        const draggedRect = draggingElement.getBoundingClientRect();
-
-        if (afterElement == null) {
-            document.getElementById('contentSection').appendChild(draggingElement);
+    if (afterElement == null) {
+        document.getElementById('contentSection').appendChild(draggingElement);
+    } else {
+        const afterRect = afterElement.getBoundingClientRect();
+        const offset = e.clientY - afterRect.top;
+        if (offset > afterRect.height / 2) {
+            afterElement.parentNode.insertBefore(draggingElement, afterElement.nextSibling);
         } else {
-            const afterRect = afterElement.getBoundingClientRect();
-            const offset = e.clientY - afterRect.top;
-            if (offset > afterRect.height / 2) {
-                afterElement.parentNode.insertBefore(draggingElement, afterElement.nextSibling);
-            } else {
-                afterElement.parentNode.insertBefore(draggingElement, afterElement);
-            }
-        }
-    });
-
-    document.addEventListener('dragend', () => {
-        draggingElement.classList.remove('dragging');
-        draggingElement = null;
-    });
-
-    function getDragAfterElement(y) {
-      const draggableElements = [...document.querySelectorAll('.itemContent:not(.dragging)')];
-      return draggableElements.reduce((closest, child) => {
-          const box = child.getBoundingClientRect();
-          const offset = Math.abs(y - box.top - box.height / 2);
-          if (offset < closest.offset) {
-              return { offset, element: child };
-          } else {
-              return closest;
-          }
-      }, { offset: Number.POSITIVE_INFINITY }).element;
-    }
-
-    function moverPraCima(elementId) {
-        const element = document.getElementById(elementId);
-        const previousElement = element.previousElementSibling;
-
-        if (previousElement) {
-            element.parentNode.insertBefore(element, previousElement);
+            afterElement.parentNode.insertBefore(draggingElement, afterElement);
         }
     }
+  });
 
-    function moverPraBaixo(elementId) {
-    const element = document.getElementById(elementId);
-    const nextElement = element.nextElementSibling;
+  document.addEventListener('dragend', () => {
+    draggingElement.classList.remove('dragging');
+    draggingElement = null;
+  });
 
-    if (nextElement) {
-        element.parentNode.insertBefore(nextElement, element);
-    }
-}
-
+  function getDragAfterElement(y) {
+    const draggableElements = [...document.querySelectorAll('.itemContent:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = Math.abs(y - box.top - box.height / 2);
+        if (offset < closest.offset) {
+            return { offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.POSITIVE_INFINITY }).element;
+  }
 </script>
 
 
